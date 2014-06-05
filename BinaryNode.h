@@ -27,4 +27,5 @@ public:
 	bool isLeaf() const							   {return (leftPtr == 0 && rightPtr == 0);}
 };
 
+//test
 #endif
