@@ -15,12 +15,12 @@
 #include <string>
 #include <sstream>
 
-class DataRecord;
+//class DataRecord;
 
 HashedTable::HashedTable(int numNodes) {
     count=numNodes;
     ArrSize=GetNum();
-    ArrPtr = new HashedNode<DataRecord*>[ArrSize];
+    ArrPtr = new HashedNode[ArrSize];
     cout<<"Array Size: "<<ArrSize<<endl;
     
     

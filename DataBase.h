@@ -11,14 +11,16 @@
 #include "BinaryNode.h"
 #include "BinaryTree.h"
 #include "BinarySearchTree.h"
-#include "Element.h"
+#include "pointerToDataRecord.h"
 #include "HashedTable.h"
+#include "LinkedStack.h"
 
 class DataBase
 {
-private:
-	BinarySearchTree<Element*>* DataTree; //pointer to BST
-    HashedTable<Element*>* DataHash;      //pointer to Hashed table
+protected:
+	BinarySearchTree<pointerToDataRecord>* DataTree; //pointer to BST
+    HashedTable* DataHash;      //pointer to Hashed table
+	LinkedStack<pointerToDataRecord>* DataStack; // pointer to Stack
     int arraySize;
     int Count;
     
@@ -26,8 +28,10 @@ public:
     //reads file, creates all stars in memory dynamically, fills DataTree and DataHash with pointers to stars.
 	DataBase();
     ~DataBase(){}; //!!!!!delete
+	BinarySearchTree<pointerToDataRecord>* accessTree() const { return DataTree; }
+	HashedTable* accessHash() const { return DataHash; }
     //(3). Find and display one data record using the primary key
-    void Display(string name);
+    /*void Display(string name);
     //(4). List data in hash table sequence
     //(5). List data in key sequence (sorted)
     void List(string order);
@@ -39,7 +43,7 @@ public:
     void PrintTree();
     //(7). Hash statistics
     void HashStatistic();
-    void Quit();
+    void Quit();*/
     
     
 	

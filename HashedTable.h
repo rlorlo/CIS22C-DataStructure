@@ -9,18 +9,20 @@
 #ifndef Lab3_HashedArray_h
 #define Lab3_HashedArray_h
 
+#include "pointerToDataRecord.h"
 #include "DataRecord.h"
 #include "HashedNode.h"
 #include <string>
 #include <iostream>
 
 
-class DataRecord;
+//class DataRecord;
 
 class HashedTable
 {
 protected:
-    HashedNode<DataRecord*>* ArrPtr;
+	
+	HashedNode* ArrPtr;
     int GetNum();
     int ArrSize;
     int count=0;
@@ -37,7 +39,7 @@ public:
     void insert(DataRecord* star);
     void remove(const DataRecord* star);
     void newArray();
-    void clearArray(HashedNode<DataRecord*>* ArrPtr);
+    void clearArray(HashedNode* ArrPtr);
 
 };
 

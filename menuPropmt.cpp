@@ -1,23 +1,23 @@
 #include "menuPropmt.h"
-
+/*
 void display(DataRecord & anItem)
 {
 	cout << anItem << endl;
-}
+}*/
 
 Menu::Menu()
 {
 	// contains propmt for user to use the menu.
 }
 
-void Menu::Add(BinarySearchTree<DataRecord>& a)
+void Menu::Add(DataBase& a)
 {
 	DataRecord NewRecord;
 	//Asks user for data to insert. Similar to lab 4.
-	NewRecord.setKey(123); 
+	NewRecord.set_name("Star"); 
 	//Now checking to see if data already exists
 	DataRecord Temp;//Data Temp needed to access getEntry function of BST. Should be similar to hash fucntion
-	if (a.getEntry(NewRecord, Temp))
+	if (a.accessTree()->getEntry())
 	{
 		//data already exists
 		cout << "already exists\n";
@@ -28,7 +28,7 @@ void Menu::Add(BinarySearchTree<DataRecord>& a)
 	a.insert(NewRecord);
 }
 
-void Menu::Delete(BinarySearchTree<DataRecord>& b)
+void Menu::Delete(DataBase& b)
 {
 	//Asks user for which record to delete.
 
@@ -47,7 +47,7 @@ void Menu::Delete(BinarySearchTree<DataRecord>& b)
 
 }
 
-void Menu::Display(const BinarySearchTree<DataRecord>& c)
+void Menu::Display(const DataBase& c)
 {	
 	//Asks user for which Record they are looking for
 	DataRecord LookingFor;
@@ -66,7 +66,7 @@ void Menu::Display(const BinarySearchTree<DataRecord>& c)
 		return;
 	}
 }
-void Menu::List(const BinarySearchTree<DataRecord>& d)
+void Menu::List(const DataBase& d)
 {
 	//prompt user to decide which data to list
 	cout << "h. for hash sequence\ns. for sorted sequence\n";
@@ -80,18 +80,18 @@ void Menu::List(const BinarySearchTree<DataRecord>& d)
 		d.inOrder(display);
 		cout << "inorder";
 }
-void Menu::PrintTree(const BinarySearchTree<DataRecord>& e)
+void Menu::PrintTree(const DataBase& e)
 {
 	//print indented tree
 	//e.printIndentedTree(Display);
 	cout << "print indented tree";
 }
-void Menu::HashStatistic(const BinarySearchTree<DataRecord>& f)
+void Menu::HashStatistic(const DataBase& f)
 {
 	//print hash statistic
 	cout << "hash statisitics";
 }
-void Menu::Undo(BinarySearchTree<DataRecord>& g)
+void Menu::Undo(DataBase& g)
 {
 	if (DataStack.isEmpty())
 		//Nothing to undo
@@ -118,7 +118,7 @@ void Menu::Undo(BinarySearchTree<DataRecord>& g)
 		}
 	}
 }
-void Menu::Save(const BinarySearchTree<DataRecord>& h)
+void Menu::Save(const DataBase& h)
 {
 	DataStack.clear();
 	//save to file output

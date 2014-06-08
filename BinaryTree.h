@@ -11,51 +11,44 @@ protected:
 	int count;							// number of nodes in tree
 
 public:
-    //default ctor
- 	BinaryTree() {rootPtr = 0; count = 0;}
+	//default ctor
+	BinaryTree() { rootPtr = 0; count = 0; }
 
-    //copy ctor
+	//copy ctor
 	BinaryTree(const BinaryTree<ItemType> & tree)
-	{rootPtr = copyTree(tree.rootPtr); count=tree.getCount();}
+	{
+		rootPtr = copyTree(tree.rootPtr); count = tree.getCount();
+	}
 
-    //dtor
-	virtual ~BinaryTree() {destroyTree(this->rootPtr);} //Do we need the this pointer?
+	//dtor
+	virtual ~BinaryTree() { destroyTree(this->rootPtr); }
 
-    // overloaded assignment operator
+	// overloaded assignment operator
 	BinaryTree & operator=(const BinaryTree & sourceTree);
 
-    // accessor
-    /* ************************************************************************
-    The getCount function is the same as the size function below.
-    ****************************************************************************/
-	int getCount () const {return count;}
-    BinaryNode<ItemType>* getRootPtr () const {return rootPtr;}
-
+	// accessor
+	BinaryNode<ItemType>* getRootPtr() const { return rootPtr; }
+	int size() const					{ return count; }
 
 	// common functions for all binary trees
- 	bool isEmpty() const				{return count == 0;}
-	int size() const					{return count;}
-	void clear()						{destroyTree(rootPtr); rootPtr = 0; count = 0;}
-	void preOrder(void visit(ItemType &)) const		{_preorder(visit, rootPtr);}
-	void inOrder(void visit(ItemType &)) const		{_inorder(visit, rootPtr);}
-	void inRevOrder(void visit(ItemType &)) const	{_inRevOrder(visit, rootPtr);}
-	void postOrder(void visit(ItemType &)) const	{_postorder(visit, rootPtr);}
+	bool isEmpty() const				{ return count == 0; }
+	void clear()						{ destroyTree(rootPtr); rootPtr = 0; count = 0; }
+	void preOrder(void visit(ItemType &)) const		{ _preorder(visit, rootPtr); }
+	void inOrder(void visit(ItemType &)) const		{ _inorder(visit, rootPtr); }
+	void inRevOrder(void visit(ItemType &)) const	{ _inRevOrder(visit, rootPtr); }
+	void postOrder(void visit(ItemType &)) const	{ _postorder(visit, rootPtr); }
+
+	// displays the indented tree
+	void printIndentedTree(BinaryNode<ItemType>* nodePtr, int level, void visit(ItemType &anItem, int lvl));
 
 	// abstract functions to be implemented by derived class
-	virtual bool insert(const ItemType & newData) = 0;
-	virtual bool remove(const ItemType & data) = 0;
-	virtual bool getEntry(const ItemType & anEntry, ItemType & returnedItem) const = 0;
+	virtual bool insert(const ItemType &newData) = 0;
+	virtual bool remove(const ItemType &data) = 0;
+	virtual bool getEntry(const ItemType &anEntry, ItemType & returnedItem) const = 0;
 
 private:
-    // mutator
-    /* ************************************************************************
-    do we really need the setCount function? Unless you are going to use it to set count the
-    same as head pointer, count should just increase or decrease when adding or
-    to the removing from the tree.
-    *************************************************************************/
-    void setCount (int c) {count=c;} //No one outside the class should be able to set count
-
-    void setRootPtr (BinaryNode<ItemType>* ptr) {rootPtr=ptr;}
+	// mutator
+	void setRootPtr(BinaryNode<ItemType>* ptr) { rootPtr = ptr; }
 
 	// delete all nodes from the tree
 	void destroyTree(BinaryNode<ItemType>* nodePtr);
@@ -74,30 +67,26 @@ private:
 template<class ItemType>
 BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>* nodePtr)
 {
-    BinaryNode<ItemType>* newNodePtr = 0;
-    if (nodePtr !=0)
-    {
-        /* ************************************************************************
-        It is not necessary to add the 0, 0 for the default constructor for the
-        BinaryNode will take care of it.
-       *************************************************************************/
-        newNodePtr = new BinaryNode<ItemType>(nodePtr->getItem(),0,0);
-        newNodePtr->setLeftPtr(copyTree(nodePtr->getLeftPtr()));
-        newNodePtr->setRightPtr(copyTree(nodePtr->getRightPtr()));
-    }
-    return newNodePtr;
+	BinaryNode<ItemType>* newNodePtr = 0;
+	if (nodePtr != 0)
+	{
+		newNodePtr = new BinaryNode<ItemType>(nodePtr->getItem());
+		newNodePtr->setLeftPtr(copyTree(nodePtr->getLeftPtr()));
+		newNodePtr->setRightPtr(copyTree(nodePtr->getRightPtr()));
+	}
+	return newNodePtr;
 }
 
 template<class ItemType>
 void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr)
 {
-    if(nodePtr!=0)
-    {
-        //postOrder traversal to delete children before parents in a recursion
-        destroyTree(nodePtr->getLeftPtr());
-        destroyTree(nodePtr->getRightPtr());
-        delete nodePtr;
-    }
+	if (nodePtr != 0)
+	{
+		//postOrder traversal to delete children before parents in a recursion
+		destroyTree(nodePtr->getLeftPtr());
+		destroyTree(nodePtr->getRightPtr());
+		delete nodePtr;
+	}
 }
 
 template<class ItemType>
@@ -115,11 +104,11 @@ void BinaryTree<ItemType>::_preorder(void visit(ItemType &), BinaryNode<ItemType
 template<class ItemType>
 void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
 {
-    if (nodePtr != 0)
+	if (nodePtr != 0)
 	{
-	    ItemType item = nodePtr->getItem();
-        _inorder(visit, nodePtr->getLeftPtr());
-        visit(item); //inOrder
+		ItemType item = nodePtr->getItem();
+		_inorder(visit, nodePtr->getLeftPtr());
+		visit(item); //inOrder
 		_inorder(visit, nodePtr->getRightPtr());
 	}
 }
@@ -127,11 +116,11 @@ void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>
 template<class ItemType>
 void BinaryTree<ItemType>::_inRevOrder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
 {
-    if (nodePtr != 0)
+	if (nodePtr != 0)
 	{
-	    ItemType item = nodePtr->getItem();
-	    _inRevOrder(visit, nodePtr->getRightPtr());
-        visit(item); //inOrder
+		ItemType item = nodePtr->getItem();
+		_inRevOrder(visit, nodePtr->getRightPtr());
+		visit(item); //inOrder
 		_inRevOrder(visit, nodePtr->getLeftPtr());
 	}
 }
@@ -139,22 +128,34 @@ void BinaryTree<ItemType>::_inRevOrder(void visit(ItemType &), BinaryNode<ItemTy
 template<class ItemType>
 void BinaryTree<ItemType>::_postorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
 {
-    if (nodePtr != 0)
+	if (nodePtr != 0)
 	{
-        ItemType item = nodePtr->getItem();
-        _postorder(visit, nodePtr->getLeftPtr());
-        _postorder(visit, nodePtr->getRightPtr());
-        visit(item); //postOrder
+		ItemType item = nodePtr->getItem();
+		_postorder(visit, nodePtr->getLeftPtr());
+		_postorder(visit, nodePtr->getRightPtr());
+		visit(item); //postOrder
 	}
 }
 
 template<class ItemType>
 BinaryTree<ItemType> & BinaryTree<ItemType>::operator=(const BinaryTree<ItemType> & sourceTree)
 {
-this->clear();
-this.rootPtr = copyTree(sourceTree.rootPtr);
-this.count = sourceTree.count;
-return *this;
+	this->clear();
+	this.rootPtr = copyTree(sourceTree.rootPtr);
+	this.count = sourceTree.count;
+	return *this;
+}
+
+
+template<class ItemType>
+void BinaryTree<ItemType>::printIndentedTree(BinaryNode<ItemType>* nodePtr, int level, void visit(ItemType &anItem, int lvl))
+{
+	if (nodePtr != 0)//Recursion Terminator Statement
+	{
+		printIndentedTree(nodePtr->getRightPtr(), level + 1); //Recursion to print right branch
+		visit(nodePtr->getItem(), level);
+		printIndentedTree(nodePtr->getLeftPtr(), level + 1); //Recursion to print left branch
+	}
 }
 
 #endif

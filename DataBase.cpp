@@ -11,19 +11,19 @@
 #include <cctype>
 
 
-DataBase::DataBase()
+DataBase::DataBase() : DataStack(0)
 {
 
-    Element* tempStar;
+    //Element* tempStar;
     
-    DataTree = new BinarySearchTree<Element*>();
-    DataHash = new HashedTable<Element*>();
+    DataTree = new BinarySearchTree<pointerToDataRecord>;
+    DataHash = new HashedTable;
 
     //File Data members
 	ifstream File;
     string fileName = "brightstars.txt";
     
-    //Data members for Element.h
+    //Data members for DataRecord.h
     string n;       // Name of the star in constellation
     string n2;      // Usual name of the star
     float V;        // Visual magnitude
@@ -110,19 +110,19 @@ DataBase::DataBase()
     File >> buffer;
     D =stoi(buffer);
     
-        tempStar = new Element();
-   
-        tempStar->set_name(n);
-        tempStar->set_name2(n2);
-        tempStar->set_VisM(V);
-        tempStar->set_Distance(D);
-        tempStar->set_SpT(S);
-        tempStar->set_Dec(De);
-        tempStar->set_RAs(Ra);
-        
+    DataRecord* tempStar = new DataRecord();
+    tempStar->set_name(n);
+	tempStar->set_name2(n2);
+	tempStar->set_VisM(V);
+	tempStar->set_Distance(D);
+	tempStar->set_SpT(S);
+	tempStar->set_Dec(De);
+	tempStar->set_RAs(Ra);
+
+	pointerToDataRecord tempHolder(tempStar);
     //insert pointers into BST and Hash Table
-    DataTree->insertBST(tempStar);
-    DataHash->insertHash(tempStar);
+    DataTree->insert(tempHolder);
+    //DataHash->insert(tempHolder);
 	
    
     }
@@ -130,13 +130,13 @@ DataBase::DataBase()
     // Close the file
 	File.close();
 }
-
+/*
 void DataBase :: Display()
 {
     
-}
+}*/
 
-void filePrint(Element & star, ofstream File)
+void filePrint(DataRecord & star, ofstream File)
 {
 	File << left << setw(23) << star.get_name() << setw(23) << star.get_name2() << setw(10) << star.get_VisM() << setw(10) << star.get_AbsM() << setw(10) << star.get_SpT() << setw(10) << star.get_Distance() << endl;
 }
@@ -153,6 +153,6 @@ void DataBase::Quit()
         cin >> fileName;
         File.open(fileName);
     }
-   DataTree->inOrder(filePrint);
+   //DataTree->inOrder(filePrint); //need to change this to hash array.
     
 }

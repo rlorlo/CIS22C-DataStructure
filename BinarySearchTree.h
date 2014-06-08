@@ -28,7 +28,7 @@ private:
 
 public:
 	// insert a node at the correct location
-    bool insert(const ItemType & newEntry);
+	bool insert(const ItemType & newEntry);
 	// remove a node if found
 	bool remove(const ItemType & anEntry);
 	// find a target node
@@ -41,7 +41,7 @@ public:
 template<class ItemType>
 bool BinarySearchTree<ItemType>::insert(const ItemType & newEntry)
 {
-    //create a new BinaryNode and initialize the node with new data
+	//create a new BinaryNode and initialize the node with new data
 	BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newEntry);
 	//call the _insert private function to act upon the current BinaryTree object
 	this->rootPtr = _insert(this->rootPtr, newNodePtr);
@@ -56,20 +56,20 @@ bool BinarySearchTree<ItemType>::remove(const ItemType & target)
 	bool isSuccessful = false;
 	this->rootPtr = _remove(this->rootPtr, target, isSuccessful);//This internal private function takes care of removal
 	if (isSuccessful)
-	this->count--;
+		this->count--;
 	return isSuccessful;
 }
 
 template<class ItemType>
 bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType & returnedItem) const
 {
-BinaryNode<ItemType>* found = findNode(this->rootPtr, anEntry);
-if (found)
- {
-    returnedItem = found->getItem();
-    return true;
- }
-return false;
+	BinaryNode<ItemType>* found = findNode(this->rootPtr, anEntry);
+	if (found)
+	{
+		returnedItem = found->getItem();
+		return true;
+	}
+	return false;
 }
 
 
@@ -77,27 +77,28 @@ return false;
 
 //_insert
 //Purpose: follows the recursive algorithm to add the new data
+
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::_insert(BinaryNode<ItemType>* nodePtr,
-                                                          BinaryNode<ItemType>* newNodePtr)
+	BinaryNode<ItemType>* newNodePtr)
 {
-        //First nodePtr to be tested is always the rootPtr of the current BinaryTree Object
+	//First nodePtr to be tested is always the rootPtr of the current BinaryTree Object
 
-        if (nodePtr==0)
-            return newNodePtr;
-        else
-        {
-            if (nodePtr->getItem()>newNodePtr->getItem())
-                nodePtr->setLeftPtr(_insert (nodePtr->getLeftPtr(), newNodePtr));
-            else
-                nodePtr->setRightPtr(_insert (nodePtr->getRightPtr(), newNodePtr));
-            return nodePtr;
-        }
+	if (nodePtr == 0)
+		return newNodePtr;
+	else
+	{
+		if (nodePtr->getItem()>newNodePtr->getItem())
+			nodePtr->setLeftPtr(_insert(nodePtr->getLeftPtr(), newNodePtr));
+		else
+			nodePtr->setRightPtr(_insert(nodePtr->getRightPtr(), newNodePtr));
+		return nodePtr;
+	}
 }
 
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::_remove(BinaryNode<ItemType>* nodePtr,
-                                                          const ItemType target, bool & success)
+	const ItemType target, bool & success)
 {
 	if (nodePtr == 0) // not found
 	{
@@ -150,7 +151,7 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::deleteNode(BinaryNode<ItemType
 
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::removeLeftmostNode(BinaryNode<ItemType>* nodePtr,
-                                                                     ItemType & successor)
+	ItemType & successor)
 {
 	if (nodePtr->getLeftPtr() == 0)
 	{
@@ -167,16 +168,16 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::removeLeftmostNode(BinaryNode<
 
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::findNode(BinaryNode<ItemType>* nodePtr,
-                                                           const ItemType & target) const
+	const ItemType & target) const
 {
-        if (nodePtr==0)
-        return 0;
-            if (nodePtr->getItem()==target)
-                return nodePtr;
-            else if (nodePtr->getItem()>target)
-                return findNode(nodePtr->getLeftPtr(), target);
-            else
-                return findNode(nodePtr->getRightPtr(), target);
+	if (nodePtr == 0)
+		return 0;
+	if (nodePtr->getItem() == target)
+		return nodePtr;
+	else if (nodePtr->getItem()>target)
+		return findNode(nodePtr->getLeftPtr(), target);
+	else
+		return findNode(nodePtr->getRightPtr(), target);
 }
 
 #endif
