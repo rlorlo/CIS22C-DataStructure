@@ -46,7 +46,7 @@ DataBase::DataBase() : DataStack(0)
         File.open(fileName);
     }
 
-	//Need a count lines here before we grab teh data.
+	//Need a count lines here before we grab the data.
 
 
 	DataTree = new BinarySearchTree<pointerToDataRecord>;
@@ -117,6 +117,7 @@ DataBase::DataBase() : DataStack(0)
     tempStar->set_name(n);
 	tempStar->set_name2(n2);
 	tempStar->set_VisM(V);
+	tempStar->set_AbsM(A);
 	tempStar->set_Distance(D);
 	tempStar->set_SpT(S);
 	tempStar->set_Dec(De);

@@ -38,6 +38,7 @@ public:
 	void set_name(string n){ name = n; }
 	void set_name2(string n2){ name2 = n2; }
 	void set_VisM(float V){ VisM = V; }
+	void set_AbsM(float A){ AbsM = A; }
 	void set_Distance(int D){ Distance = D; }
 	void set_SpT(string S){ SpT = S; }
 	void set_Dec(float De){ Dec = De; }

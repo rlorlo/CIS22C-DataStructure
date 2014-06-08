@@ -26,7 +26,7 @@ Menu::Menu()
 void Menu::Add(DataBase& d)
 {
 	DataRecord* NewRecord = new DataRecord;
-	cout << "Enter Star Name";
+	cout << "Enter Star Name:\n";
 	string name;
 	cin >> name;
 	NewRecord->set_name(name); 
@@ -36,9 +36,37 @@ void Menu::Add(DataBase& d)
 		cout << "already exists\n";
 		return;
 	}
-	//ask for rest of data.
-	//NewRecord.setRadius(3.14);
-	//a.insert(NewRecord);
+	
+	string name2;
+	string stringVisM;
+	string stringAbsM;
+	string stringDistance;
+	string SpT;
+
+	float VisM;
+	float AbsM;
+	int Distance;
+	
+	cout << "Enter Common Name:\n";
+	getline(cin, name2, '\n');
+	NewRecord->set_name2(name2);
+	cout << "Enter Visual magnitude:\n";
+	getline(cin, stringVisM, '\n');
+	VisM = stof(stringVisM);
+	NewRecord->set_VisM(VisM);
+	cout << "Enter Absolute magnitude:\n";
+	getline(cin, stringAbsM, '\n');
+	AbsM = stof(stringAbsM);
+	NewRecord->set_AbsM(AbsM);
+	cout << "Enter Distance, in light years:";
+	getline(cin, stringDistance, '\n');
+	Distance = atoi(stringDistance.c_str());
+	NewRecord->set_Distance(Distance);
+	cout << "Enter Spectral type:";
+	getline(cin, SpT, '\n');
+	NewRecord->set_SpT(SpT);
+	//float set_Dec(); Do we ask for this or calculate for them?
+	//float set_RAs();  Do we ask for this or calculate for them?
 	pointerToDataRecord Holder(NewRecord);
 	d.accessTree()->insert(Holder);
 	d.accessHash()->insert(NewRecord);
