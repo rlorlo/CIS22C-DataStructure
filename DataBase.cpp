@@ -13,12 +13,6 @@
 
 DataBase::DataBase() : DataStack(0)
 {
-
-    //Element* tempStar;
-    
-    DataTree = new BinarySearchTree<pointerToDataRecord>;
-    DataHash = new HashedTable;
-
     //File Data members
 	ifstream File;
     string fileName = "brightstars.txt";
@@ -51,6 +45,15 @@ DataBase::DataBase() : DataStack(0)
         cin >> fileName;
         File.open(fileName);
     }
+
+	//Need a count lines here before we grab teh data.
+
+
+	DataTree = new BinarySearchTree<pointerToDataRecord>;
+	//Need to create hashTable size first then connect DataHash to that table before inserting.
+	int size;
+	DataHash = new HashedTable(size);//size is the size of the array.
+	
 
     //Read data from the file
     while(!File.eof())
@@ -92,7 +95,7 @@ DataBase::DataBase() : DataStack(0)
     tempRA.mins = stoi(buffer);
         
     //Convert RA to decimal degrees
-    Ra = tempRA.hours / 15 +tempRA.mins / 4;
+    Ra = tempRA.hours / 15.0 +tempRA.mins / 4.0;
     
     File >> buffer;
     De = stof(buffer);
@@ -122,37 +125,11 @@ DataBase::DataBase() : DataStack(0)
 	pointerToDataRecord tempHolder(tempStar);
     //insert pointers into BST and Hash Table
     DataTree->insert(tempHolder);
-    //DataHash->insert(tempHolder);
-	
-   
+    DataHash->insert(tempStar);
     }
     
     // Close the file
 	File.close();
 }
-/*
-void DataBase :: Display()
-{
-    
-}*/
 
-void filePrint(DataRecord & star, ofstream File)
-{
-	File << left << setw(23) << star.get_name() << setw(23) << star.get_name2() << setw(10) << star.get_VisM() << setw(10) << star.get_AbsM() << setw(10) << star.get_SpT() << setw(10) << star.get_Distance() << endl;
-}
 
-void DataBase::Quit()
-{
-    //rewrite file
-    ofstream File;
-    string fileName = "brightstars.txt";
-    File.open(fileName);
-	while (!File)
-    {
-        cout << "Error opening file\nEnter filename: ";
-        cin >> fileName;
-        File.open(fileName);
-    }
-   //DataTree->inOrder(filePrint); //need to change this to hash array.
-    
-}

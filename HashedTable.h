@@ -27,10 +27,10 @@ protected:
     int ArrSize;
     int count=0;
 //    int primeArray[10]={73,107,127,179,233,283,337,379,419,457};
-    int primeArray[10]={5,20,50,125,300,650,900,1000,1250,1500};
+	static int primeArray[]={5,20,50,125,300,650,900,1000,1250,1500};
     
 public:
-    HashedTable(int count =0);
+	HashedTable(int count = 0);
     ~HashedTable() {delete ArrPtr;}
     void displayStats();
     int hash(const DataRecord* A);

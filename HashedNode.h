@@ -16,12 +16,12 @@ private:
    
 public:
 	HashedNode()							{star = 0; status=0;}
-	HashedNode(const pointerToDataRecord anItem)		{ star = anItem; status = 1; }
-	void setItem(const pointerToDataRecord anItem)		{ star = anItem; status = 1; }
+	HashedNode(const DataRecord anItem)		{ star = anItem; status = 1; }
+	void setItem(const DataRecord anItem)		{ star = anItem; status = 1; }
     void setStatus(int newStatus)           {status = newStatus;}
     int getStatus() const                   {return status;}
     void display() const					{cout<<"\nDisplay\n";}
-	pointerToDataRecord getItem()                      { return star; }
+	DataRecord getItem()                      { return star; }
     void deleteStar()                       {star=0; status=-1;}
 };
 

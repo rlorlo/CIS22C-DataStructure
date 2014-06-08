@@ -1,44 +1,64 @@
+//
+//  menuPropmt.cpp
+//  Team project
+//
+//  Created by Richard and Tatiana
+
 #include "menuPropmt.h"
-/*
-void display(DataRecord & anItem)
+#include <iostream>
+#include <fstream>
+
+void display(pointerToDataRecord &objPtr)
 {
-	cout << anItem << endl;
-}*/
+	cout << *(objPtr.get_pointer()) << endl;
+}
+
+void filePrint(DataRecord & star, ofstream File)
+{
+	File << left << setw(23) << star.get_name() << setw(23) << star.get_name2() << setw(10) << star.get_VisM() << setw(10) << star.get_AbsM() << setw(10) << star.get_SpT() << setw(10) << star.get_Distance() << endl;
+}
 
 Menu::Menu()
 {
 	// contains propmt for user to use the menu.
 }
 
-void Menu::Add(DataBase& a)
+void Menu::Add(DataBase& d)
 {
-	DataRecord NewRecord;
-	//Asks user for data to insert. Similar to lab 4.
-	NewRecord.set_name("Star"); 
-	//Now checking to see if data already exists
-	DataRecord Temp;//Data Temp needed to access getEntry function of BST. Should be similar to hash fucntion
-	if (a.accessTree()->getEntry())
+	DataRecord* NewRecord = new DataRecord;
+	cout << "Enter Star Name";
+	string name;
+	cin >> name;
+	NewRecord->set_name(name); 
+	DataRecord* Temp = 0; //Data Temp needed to access getEntry function of Hash.
+	if (d.accessHash()->findEntry(NewRecord, Temp))
 	{
-		//data already exists
 		cout << "already exists\n";
 		return;
 	}
-	//prompt for rest of data.
-	NewRecord.setRadius(3.14);
-	a.insert(NewRecord);
-}
+	//ask for rest of data.
+	//NewRecord.setRadius(3.14);
+	//a.insert(NewRecord);
+	pointerToDataRecord Holder(NewRecord);
+	d.accessTree()->insert(Holder);
+	d.accessHash()->insert(NewRecord);
+	}
 
-void Menu::Delete(DataBase& b)
+void Menu::Delete(DataBase& d)
 {
 	//Asks user for which record to delete.
-
-	//pass that key to the hash function to see if data exists.
-	DataRecord LookingFor(5, 14.8);
-	DataRecord Temp;
-	if (b.getEntry(LookingFor, Temp))
+	DataRecord* DeleteRecord; //We dont need to allocate memory since it is temporary holder.
+	string name;
+	cout << "Enter Star Name to Delete";
+	cin >> name;
+	DeleteRecord->set_name(name);
+	DataRecord* Temp = 0;;//will need this to push on to stack.
+	if (d.accessHash()->findEntry(DeleteRecord, Temp))
 	{
-		DataStack.push(Temp);
-		b.remove(Temp);
+		d.accesStack()->push(Temp);
+		d.accessHash()->remove(Temp);
+		pointerToDataRecord Holder(Temp);
+		d.accessTree()->remove(Holder);
 		return;
 	}
 	//can't be found
@@ -47,79 +67,115 @@ void Menu::Delete(DataBase& b)
 
 }
 
-void Menu::Display(const DataBase& c)
+void Menu::Display(const DataBase& d)
 {	
 	//Asks user for which Record they are looking for
-	DataRecord LookingFor;
-	LookingFor.setKey(123);
-	DataRecord Found;
-	if (c.getEntry(LookingFor, Found))
+	string name;
+	cout << "Enter Star Name: ";
+	cin >> name;
+	DataRecord* LookingFor;//We dont need to allocate memory since it is temporary holder.
+	LookingFor->set_name(name);
+	DataRecord* Found = 0;
+	if (d.accessHash()->findEntry(LookingFor, Found))
 	{
 		//print what is found.
-		cout << Found;
+		cout << *Found;
 		return;
 	}
 	else
 	{
 		//print cant be found.
-		cout << "cant be found";
+		cout << "Cant be found";
 		return;
 	}
 }
 void Menu::List(const DataBase& d)
 {
 	//prompt user to decide which data to list
-	cout << "h. for hash sequence\ns. for sorted sequence\n";
 	string input;
+	cout << "h. for hash sequence\ns. for sorted sequence\n";
 	cin >> input;
+	while (input != "h" && input != "s");
+	{
+		cout << "Not a valid coice. Please try again.\n";
+		cout << "h. for hash sequence\ns. for sorted sequence\n";
+		cin >> input;
+	} 
 	if (input == "h")
-		//print hash
-		cout << "print hash";
+		d.accessHash()->printHash(); //Tom, we need a function that will print the data in hash order.
 	else
 		//print sorted
-		d.inOrder(display);
-		cout << "inorder";
+		d.accessTree()->inOrder(display);
 }
-void Menu::PrintTree(const DataBase& e)
+void Menu::PrintTree(const DataBase& d)
 {
 	//print indented tree
-	//e.printIndentedTree(Display);
+	d.accessTree()->printIndentedTree(Display); //Need display function for printIndentedTree
 	cout << "print indented tree";
 }
-void Menu::HashStatistic(const DataBase& f)
+void Menu::HashStatistic(const DataBase& d)
 {
-	//print hash statistic
-	cout << "hash statisitics";
+	d.accessHash()->displayStats();
 }
-void Menu::Undo(DataBase& g)
+void Menu::Undo(DataBase& d)
 {
-	if (DataStack.isEmpty())
-		//Nothing to undo
-		cout << "nothing to undo";
+	if (d.accesStack()->isEmpty())
+	{
+		cout << "Nothing to Undo";
+		return;
+	}
 	else
 	{
 		//add to Hash Table and BST
-		DataRecord Temp;
-		DataRecord topStack;
-		DataStack.peek(topStack);
-		DataStack.pop();
-		if (g.getEntry(topStack, Temp))
+		DataRecord* Temp = 0;
+		DataRecord* topStack = 0;
+		d.accesStack()->peek(topStack);
+		d.accesStack()->pop();
+		if (d.accessHash()->findEntry(topStack, Temp))
 		{
 			//data already exists
-			cout << "already exists";
+			cout << "Data Already Exists";
 			return;
 		}
 		else
 		{
-			g.insert(topStack);
+			d.accessHash()->insert(topStack);
+			pointerToDataRecord Holder(topStack);
+			d.accessTree()->insert(Holder);
 			//successful
 			cout << "undo was successful";
 			return;
 		}
 	}
 }
-void Menu::Save(const DataBase& h)
+void Menu::Save(const DataBase& d)
 {
-	DataStack.clear();
+	d.accesStack()->clear();
 	//save to file output
+	ofstream File;
+	string fileName = "brightstars.txt";
+	File.open(fileName);
+	while (!File)
+	{
+		cout << "Error opening file\nEnter filename: ";
+		cin >> fileName;
+		File.open(fileName);
+	}
+	//d.accessTree()->inOrder(filePrint); // this needs to be hash table instead of tree.
+	File.close();
+}
+
+void Menu::Quit(const DataBase& d)
+{
+	char choice;
+	cout << "Do you want to save your data? y/n\n";
+	cin >> choice;
+	while (choice != 'y' && choice != 'n')
+	{
+		cout << "invalid choice.\n";
+		cout << "Do you want to save your data? y/n\n";
+		cin >> choice;
+	}
+	if (choice == 'y')
+		Save(d);
 }

@@ -15,18 +15,6 @@
 class Menu
 {
 private:
-	/* ***************************************************************
-	This will have to move to the head ptr.
-	************************************************************** */
-	 //pointer to linked stack
-
-public:
-	//reads file, creates all stars in memory dynamically, fills DataTree and DataHash with pointers to stars.
-	Menu();
-	/* ******************************************************************************************************
-	Instead of passing in the BinarySearchTree, I would be passing in the DataRecord and the display functions.
-	I was just using the BST to try to test my functions.
-    *******************************************************************************	*/
 	//(1). Add new data
 	void Add(DataBase&);
 	//(2). Delete data
@@ -44,9 +32,11 @@ public:
 	void Undo(DataBase&);
 	//(9). Save changes. Clears stack
 	void Save(const DataBase&);
-	//Don't need function quit.
+	//Quit function. Asks if you want to save data before quitting.
+	void Quit(const DataBase& d);
+public:
 
-
+	Menu();
 
 };
 

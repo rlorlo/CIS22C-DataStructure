@@ -212,7 +212,7 @@ void HashedTable::newArray(){
 
 }
 
-void HashedTable::clearArray(HashedNode<DataRecord*>* Table){
+void HashedTable::clearArray(HashedNode* Table){
     
     for(int i=0; i<ArrSize; i++){
         Table[i].deleteStar();
