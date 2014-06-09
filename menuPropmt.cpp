@@ -138,7 +138,7 @@ void Menu::List(const DataBase& d)
 void Menu::PrintTree(const DataBase& d)
 {
 	//print indented tree
-	d.accessTree()->printIndentedTree(Display); //Need display function for printIndentedTree
+//TR	d.accessTree()->printIndentedTree(Display); //Need display function for printIndentedTree
 	cout << "print indented tree";
 }
 void Menu::HashStatistic(const DataBase& d)

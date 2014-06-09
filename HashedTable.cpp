@@ -15,12 +15,12 @@
 #include <string>
 #include <sstream>
 
-//class DataRecord;
+class DataRecord;
 
 HashedTable::HashedTable(int numNodes) {
     count=numNodes;
     ArrSize=GetNum();
-    ArrPtr = new HashedNode[ArrSize];
+    ArrPtr = new HashedNode<DataRecord*>[ArrSize];
     cout<<"Array Size: "<<ArrSize<<endl;
     
     
@@ -34,22 +34,67 @@ int HashedTable::hash(const DataRecord* A){
 
     strcpy(word,(A->get_name().c_str()));
     
-//    for (int i=0; i<strlen(word); i++){
-      for (int i=0; i<3; i++){
+    for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
     }
     
     index=((static_cast<int>(index2))%ArrSize);
     
-  //  cout<< " Index: "<<index<<endl;
+    return index;
+}
+
+int HashedTable::hash(const string target){
+    int index=0;
+    double index2=0;
+    char word[20];
+    
+    strcpy(word,(target.c_str()));
+    
+    for (int i=0; i<3; i++){
+        index2=index2+(word[i]*(word[0])*(i+13));
+    }
+    
+    index=((static_cast<int>(index2))%ArrSize);
     
     return index;
-        
+}
+
+void HashedTable::printHash() {
+
+    for (int i=0; i<ArrSize; i++){
+        cout<<"Index "<<i<<": "<<(ArrPtr[i].getItem())->get_name()<<endl;
+    }
         
 }
 
+
+string HashedTable::printHashSequence(const string key){
+    int index=-1, ColResCounter=0;
+    stringstream hashSequence;
+    
+    hashSequence<<"Hash Sequence: ";
+    index=hash(key);
+    
+    if(ArrPtr[index].getStatus()!=0)
+        while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) && ArrPtr[index].getItem()!=0){
+            if( (ArrPtr[index].getItem())->get_name() == key)
+            {
+                hashSequence<<index<<endl;
+                return hashSequence.str();
+            }
+            else {
+                hashSequence<<index<<", ";
+                ColResCounter++;
+                index=ColRes(index, ColResCounter);
+            }
+        }
+        
+        return "Item not in list\n"; 
+}
+
+
 void HashedTable::displayStats() {
-    int max=0,
+  /*  int max=0,
         cols=0,
         noCol=0,
         empty=0;
@@ -92,7 +137,7 @@ void HashedTable::displayStats() {
         cout<<"Empty Elements: "<<empty<<endl;
         cout<<"Number of elements in lists: "<<count-noCol-cols;
         cout<<endl<<endl;
-    
+    */
 }
 
 int HashedTable::GetNum() {
@@ -102,39 +147,64 @@ int HashedTable::GetNum() {
         if (count<(primeArray[i]/2))
             return primeArray[i];
     }
-        
+    
     return primeArray[i];
 }
 
-bool HashedTable::findEntry(const DataRecord* test){
+
+bool HashedTable::findEntry(const string targetKey, DataRecord* target){
     
-    int index= hash(test);
+    int index= hash(targetKey);
     int ColResCounter=0;
     
     
-    while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0)){
-        if( ArrPtr[index].getItem() == test)
+    while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) && ArrPtr[index].getItem()!=0){
+        if( (ArrPtr[index].getItem())->get_name() == targetKey)
     {
-        cout<<test->get_name()<<" found at "<<index<<endl;
+        cout<<targetKey<<" found at "<<index<<endl;
         return true;
     }
     else {
         ColResCounter++;
-        index=ColRes(test, index, ColResCounter);
+        index=ColRes(index, ColResCounter);
     }
     }
 
-    cout<<test->get_name()<<" not found\n";
+    cout<<targetKey<<" not found\n";
 
     return true;
 }
 
-int HashedTable::ColRes(const DataRecord* A, int index, int count){
-    int newIndex;
-    cout<<"Index "<<index<<" called, but it is full"<<endl;
+bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
     
-    newIndex=index+count*count;
-    cout<<"Attempting ColRes index: "<<newIndex<<endl;
+    int index= hash(targetKey);
+    int ColResCounter=0;
+    
+    
+    while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) && ArrPtr[index].getItem()!=0){
+        if( (ArrPtr[index].getItem()) == targetKey)
+        {
+            cout<<targetKey<<" found at "<<index<<endl;
+            return true;
+        }
+        else {
+            ColResCounter++;
+            index=ColRes(index, ColResCounter);
+        }
+    }
+    
+    cout<<targetKey<<" not found\n";
+    
+    return true;
+}
+
+
+int HashedTable::ColRes(int index, int count){
+    int newIndex;
+//    cout<<"Index "<<index<<" called, but it is full"<<endl;
+    
+    newIndex=(index+count*count)%ArrSize;
+//    cout<<"Attempting ColRes index: "<<newIndex<<endl;
     
     return newIndex;
 }
@@ -155,14 +225,11 @@ void HashedTable::insert(DataRecord* star){
         }
     else{
         ColResCount++;
-        index=ColRes(star, index, ColResCount);
+        index=ColRes(index, ColResCount);
         }
     }
     
-    cout<<"Count: "<<count<<endl;
-    if (count>(ArrSize*.7))
-        newArray();
-
+//    cout<<"Count: "<<count<<endl;
     
 }
         
@@ -180,7 +247,7 @@ void HashedTable::remove(const DataRecord* star){
         else
         {
             ColResCount++;
-            index=ColRes(star, index, ColResCount);
+            index=ColRes(index, ColResCount);
 
         }
     }
@@ -189,30 +256,9 @@ void HashedTable::remove(const DataRecord* star){
     
 }
 
-void HashedTable::newArray(){
-    cout<<"\nMaking new array!\n\n";
-    
-    HashedTable* HA2= new HashedTable(count);
-    int index=0;
-    
-    for(int i=0; i<this->ArrSize; i++){
-        index=0;
-        if (ArrPtr[i].getStatus()==1){
-        index=HA2->hash(ArrPtr[i].getItem());
-        HA2->insert(ArrPtr[i].getItem());
-        }
-    }
-    
-    clearArray(ArrPtr);
-    
-    this->ArrPtr= HA2->ArrPtr;
 
-    clearArray(HA2->ArrPtr);
-    delete HA2;
 
-}
-
-void HashedTable::clearArray(HashedNode* Table){
+void HashedTable::clearArray(HashedNode<DataRecord*>* Table){
     
     for(int i=0; i<ArrSize; i++){
         Table[i].deleteStar();

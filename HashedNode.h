@@ -7,21 +7,21 @@
 
 using namespace std;
 
-//template<class ItemType>
+template<class ItemType>
 class HashedNode
 {
 private:
-   DataRecord star;
+   ItemType star;
    int status;
    
 public:
-	HashedNode()							{star = 0; status=0;}
-	HashedNode(const DataRecord anItem)		{ star = anItem; status = 1; }
-	void setItem(const DataRecord anItem)		{ star = anItem; status = 1; }
+	HashedNode()										{star = 0; status=0;}
+	HashedNode(const ItemType anItem)				{star = anItem; status=1;}
+	void setItem(const ItemType anItem)		{star = anItem; status=1;}
     void setStatus(int newStatus)           {status = newStatus;}
-    int getStatus() const                   {return status;}
-    void display() const					{cout<<"\nDisplay\n";}
-	DataRecord getItem()                      { return star; }
+    int getStatus() const                      {return status;}
+    void display() const                        {cout<<"\nDisplay\n";}
+    ItemType getItem()                      {return star;}
     void deleteStar()                       {star=0; status=-1;}
 };
 

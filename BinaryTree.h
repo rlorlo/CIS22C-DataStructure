@@ -141,8 +141,8 @@ template<class ItemType>
 BinaryTree<ItemType> & BinaryTree<ItemType>::operator=(const BinaryTree<ItemType> & sourceTree)
 {
 	this->clear();
-	this.rootPtr = copyTree(sourceTree.rootPtr);
-	this.count = sourceTree.count;
+//TR	this.rootPtr = copyTree(sourceTree.rootPtr);
+//TR	this.count = sourceTree.count;
 	return *this;
 }
 
