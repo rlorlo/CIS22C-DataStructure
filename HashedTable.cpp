@@ -62,7 +62,12 @@ int HashedTable::hash(const string target){
 void HashedTable::printHash() {
 
     for (int i=0; i<ArrSize; i++){
-        cout<<"Index "<<i<<": "<<(ArrPtr[i].getItem())->get_name()<<endl;
+        cout<<"Index "<<i<<": ";
+     
+        if(ArrPtr[i].getItem()!=0)
+            cout<<(ArrPtr[i].getItem())->get_name()<<endl;
+        else
+            cout<<"blank\n";
     }
         
 }
