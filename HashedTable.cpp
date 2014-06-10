@@ -167,17 +167,18 @@ bool HashedTable::findEntry(const string targetKey, DataRecord* target){
         if( (ArrPtr[index].getItem())->get_name() == targetKey)
     {
         cout<<targetKey<<" found at "<<index<<endl;
+        target=ArrPtr[index].getItem();
         return true;
     }
     else {
         ColResCounter++;
         index=ColRes(index, ColResCounter);
-    }
+    	}
     }
 
     cout<<targetKey<<" not found\n";
 
-    return true;
+    return false;
 }
 
 bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
@@ -190,6 +191,7 @@ bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
         if( (ArrPtr[index].getItem()) == targetKey)
         {
             cout<<targetKey<<" found at "<<index<<endl;
+            target=ArrPtr[index].getItem();
             return true;
         }
         else {
@@ -200,7 +202,7 @@ bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
     
     cout<<targetKey<<" not found\n";
     
-    return true;
+    return false;
 }
 
 
