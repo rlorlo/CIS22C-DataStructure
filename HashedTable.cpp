@@ -11,13 +11,18 @@
 #include <iostream>
 #include <fstream>
 #include <cctype>
+#include <cstring>
 #include <cstdlib>
 #include <string>
 #include <sstream>
 
+
 class DataRecord;
 
 HashedTable::HashedTable(int numNodes) {
+	int tempArray[10] = {73,107,127,179,233,283,337,379,419,1016};
+	for(int i =0;i<10;i++)
+		primeArray[i] = tempArray[i];
     count=numNodes;
     ArrSize=GetNum();
     ArrPtr = new HashedNode<DataRecord*>[ArrSize];
@@ -30,9 +35,10 @@ HashedTable::HashedTable(int numNodes) {
 int HashedTable::hash(const DataRecord* A){
     int index=0;
     double index2=0;
-    char word[20];
+    char word[100];
 
-    strcpy(word,(A->get_name().c_str()));
+	//string test = A->get_name().c_str();
+	strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
@@ -46,9 +52,9 @@ int HashedTable::hash(const DataRecord* A){
 int HashedTable::hash(const string target){
     int index=0;
     double index2=0;
-    char word[20];
+    char word[40];
     
-    strcpy(word,(target.c_str()));
+    strcpy_s(word,(target.c_str()));
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
@@ -167,17 +173,18 @@ bool HashedTable::findEntry(const string targetKey, DataRecord* target){
         if( (ArrPtr[index].getItem())->get_name() == targetKey)
     {
         cout<<targetKey<<" found at "<<index<<endl;
+        target=ArrPtr[index].getItem();
         return true;
     }
     else {
         ColResCounter++;
         index=ColRes(index, ColResCounter);
-    }
+    	}
     }
 
     cout<<targetKey<<" not found\n";
 
-    return true;
+    return false;
 }
 
 bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
@@ -190,6 +197,7 @@ bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
         if( (ArrPtr[index].getItem()) == targetKey)
         {
             cout<<targetKey<<" found at "<<index<<endl;
+            target=ArrPtr[index].getItem();
             return true;
         }
         else {
@@ -200,7 +208,7 @@ bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
     
     cout<<targetKey<<" not found\n";
     
-    return true;
+    return false;
 }
 
 
@@ -215,7 +223,8 @@ int HashedTable::ColRes(int index, int count){
 }
 
 void HashedTable::insert(DataRecord* star){
-    int ColResCount=0;
+    
+	int ColResCount=0;
     int index=0;
     index = hash(star);
     count++;
@@ -226,7 +235,7 @@ void HashedTable::insert(DataRecord* star){
     if (ArrPtr[index].getStatus()!=1){
         ArrPtr[index].setItem(star);
         cout<<star->get_name()<<" inserted at "<<index<<endl;
-        break;
+        return;//shouldn't use break, should use return since we added it.
         }
     else{
         ColResCount++;

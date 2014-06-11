@@ -17,20 +17,23 @@
 
 class DataBase
 {
-protected:
-	BinarySearchTree<pointerToDataRecord>* DataTree; //pointer to BST
-    HashedTable* DataHash;      //pointer to Hashed table
-	LinkedStack<DataRecord*>* DataStack; // pointer to Stack
-    int arraySize;
-    int Count;
+private:
+	BinarySearchTree<pointerToDataRecord>* DataTree;	//pointer to BST
+    HashedTable* DataHash;								//pointer to Hashed table
+	LinkedStack<DataRecord*>* DataStack;				//pointer to Stack
+	int count;
     
 public:
-    //reads file, creates all stars in memory dynamically, fills DataTree and DataHash with pointers to stars.
-	DataBase();
+	DataBase() : DataStack(0), DataTree(0), count(0), DataHash(0) {};// { DataHash = new HashedTable(50); }
     ~DataBase(){}; //!!!!!delete
+	void Allocation() {DataHash = new HashedTable(count); DataTree = new BinarySearchTree<pointerToDataRecord>; }
 	BinarySearchTree<pointerToDataRecord>* accessTree() const { return DataTree; }
 	HashedTable* accessHash() const { return DataHash; }
-	LinkedStack<DataRecord*>* accesStack() const { return DataStack; }	
+	LinkedStack<DataRecord*>* accesStack() const { return DataStack; }
+	void incrementCount() {count++;}
+	/*void IncArraySize() {arraySize++};
+	void DecArraySize() {arraySize--};
+	int getArraySize() {return arraySize};*/
 };
 
 

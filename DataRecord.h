@@ -22,7 +22,9 @@ private:
 	int Distance;      // Distance, in light years
 	string SpT;        // Spectral type (will be converted to color below)
 	float Dec;         // Equatorial coordinate, Declination, in degrees
-	float RAs;         // Equatorial coordinate, Right ascension, in degrees
+	//float RAs;       // Equatorial coordinate, Right ascension, in degrees
+        int RAs_h ;        // Equatorial coordinate, Right ascension, (hours and minutes, will be converted to degrees below)
+        int RAs_m;
 
 public:
 	//accessors
@@ -33,7 +35,11 @@ public:
 	int get_Distance() const { return Distance; }
 	string get_SpT() const { return SpT; }
 	float get_Dec() const { return Dec; }
-	float get_RAs() const { return Dec; }
+	//float get_RAs() const { return Dec; }
+        int get_RAs_h() const {return RAs_h;}
+        int get_RAs_m() const {return RAs_m;}
+        
+     
 	//mutators
 	void set_name(string n){ name = n; }
 	void set_name2(string n2){ name2 = n2; }
@@ -42,9 +48,12 @@ public:
 	void set_Distance(int D){ Distance = D; }
 	void set_SpT(string S){ SpT = S; }
 	void set_Dec(float De){ Dec = De; }
-	void set_RAs(float Ra){ RAs = Ra; }
-
-	void printStar() const {
+        
+	//void set_RAs(float Ra){ RAs = Ra; }
+        void set_RAs_h(int RA_m) { RAs_m = RA_m; }
+        void set_RAs_m(int RA_h) { RAs_h = RA_h; }
+ 
+	/*void printStar() const {
 		cout << "Name of the star in constellation: " << name
 			<< "\nUsual name of the star: " << name2
 			<< "\nVisual magnitude: " << VisM
@@ -52,8 +61,9 @@ public:
 			<< "\nDistance, in light years: " << Distance
 			<< "\nSpectral type: " << SpT
 			<< "\nEquatorial coordinate, Declination, in degrees: " << Dec
-			<< "\nEquatorial coordinate, Right ascension, in degrees: " << RAs << endl;
-	}
+			<< "\nEquatorial coordinate, Right ascension, in hours"< RAs_h << endl;
+                        << "\nEquatorial coordinate, Right ascension, in mins: " << RAs_m << endl;
+	}*/
 
 	//Overloaded operators
 	bool operator>(const DataRecord& s) const { return Distance > s.get_Distance(); }

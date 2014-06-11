@@ -75,7 +75,7 @@ void Menu::Add(DataBase& d)
 void Menu::Delete(DataBase& d)
 {
 	//Asks user for which record to delete.
-	DataRecord* DeleteRecord; //We dont need to allocate memory since it is temporary holder.
+	DataRecord* DeleteRecord = new DataRecord; //We dont need to allocate memory since it is temporary holder.
 	string name;
 	cout << "Enter Star Name to Delete";
 	cin >> name;
@@ -101,7 +101,7 @@ void Menu::Display(const DataBase& d)
 	string name;
 	cout << "Enter Star Name: ";
 	cin >> name;
-	DataRecord* LookingFor;//We dont need to allocate memory since it is temporary holder.
+	DataRecord* LookingFor = new DataRecord;//We dont need to allocate memory since it is temporary holder.
 	LookingFor->set_name(name);
 	DataRecord* Found = 0;
 	if (d.accessHash()->findEntry(LookingFor, Found))
