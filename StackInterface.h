@@ -33,5 +33,10 @@ public:
 	@param: data, reference to pass back data at top of stack
     @return: True if data is passed back, false if stack is empty */
 	virtual bool peek(ItemType & data) const = 0;
+
+	/** Return the top of this stack
+	@post: The stack has been cleared.
+	*/
+	virtual void clear() = 0;
 }; 
 #endif

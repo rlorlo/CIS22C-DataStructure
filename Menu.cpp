@@ -63,8 +63,8 @@ string Menu::OpenFile(DataBase& d, string fileName)
 	//Read data from the file
     while(!File.eof())
 	{
-		if (x == 0)
-			File >> buffer;
+		//if (x == 0)
+			//File >> buffer;
 		File >> buffer;
 		File >> n;
 		File >> buffer;
@@ -167,10 +167,10 @@ void Menu::Add(DataBase& d, string name, string name2, int RA_h, int RA_m, float
 
 bool Menu::Delete(DataBase& d, string name) //need to pass bool
 {
-	DataRecord* DeleteRecord = new DataRecord;
-	DeleteRecord->set_name(name);
-	DataRecord* Temp = 0;;//will need this to push on to stack.
-	if (d.accessHash()->findEntry(DeleteRecord, Temp))
+	//DataRecord* DeleteRecord = new DataRecord;
+	//DeleteRecord->set_name(name);
+	DataRecord* Temp = new DataRecord;//will need this to push on to stack.
+	if (d.accessHash()->findEntry(name, Temp))
 	{
 		d.accesStack()->push(Temp);
 		d.accessHash()->remove(Temp);
@@ -181,15 +181,10 @@ bool Menu::Delete(DataBase& d, string name) //need to pass bool
 	return false;
 }
 
-string Menu::Display(const DataBase& c, string starToDisplay)
+string Menu::Display(const DataBase& d, string starToDisplay)
 {	
-	DataRecord* lookingFor= new DataRecord;
-	DataRecord* found = 0;
-	lookingFor->set_name(starToDisplay);
-	//if (c.accessHash()->findEntry(&lookingFor, found))
-	pointerToDataRecord look(lookingFor);
-	pointerToDataRecord find(found);
-	if(c.accessTree()->getEntry(lookingFor, find))
+	DataRecord* found = new DataRecord;
+	if(d.accessHash()->findEntry(starToDisplay, found))
 	{
 		return "Name of the star in constellation: " + found->get_name() + 
 			"\nUsual name of the star: " + found->get_name2() +
@@ -211,20 +206,23 @@ string Menu::List(const DataBase& d)
 	string input;
 	cin >> input;
 	if (input == "h")
-		//print hash
+	{
 		cout << "print hash";
+		d.accessHash()->printHash();
+	}
 	else
-		//print sorted
-		d.inOrder(display);
+		print sorted
+		d.accessTree->inOrder(display);
 		cout << "inorder";
 }
-string Menu::PrintTree(const DataBase& e)
+
+string Menu::PrintTree(const DataBase& d)
 {
 	//print indented tree
-	//e.printIndentedTree(Display);
+	d.accessTree()->printIndentedTree(Display);
 	cout << "print indented tree";
-}
-*/
+}*/
+
 string Menu::HashStatistic(const DataBase& f)
 {
 	//print hash statistic
@@ -233,8 +231,8 @@ string Menu::HashStatistic(const DataBase& f)
 bool Menu::Undo(DataBase& d)
 {
 	//add to Hash Table and BST
-	DataRecord* Temp = 0;
-	DataRecord* topStack = 0;
+	DataRecord* Temp = new DataRecord;
+	DataRecord* topStack = new DataRecord;
 	d.accesStack()->peek(topStack);
 	d.accesStack()->pop();
 	if (d.accessHash()->findEntry(topStack, Temp))
@@ -248,15 +246,15 @@ bool Menu::Undo(DataBase& d)
 		pointerToDataRecord Holder(topStack);
 		d.accessTree()->insert(Holder);
 		//successful
-		cout << "undo was successful";
+		//cout << "undo was successful";
 		return true;
 	}
 }
 
 void Menu::Save(const DataBase& d)//, string fileName)
 {
-	//save to file output
-	//d.accesStack()->clear();
+	//clears undo
+	d.accesStack()->clear();
 	/*save to file output
 	ofstream File;
 	string fileName = "brightstars.txt";

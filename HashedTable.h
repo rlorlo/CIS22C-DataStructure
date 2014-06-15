@@ -36,11 +36,11 @@ public:
     int hash(const DataRecord* nodePtr);
     int hash(const string nodePtr);
     int ColRes(int index, int count);
-    bool findEntry(const string targetKey, DataRecord* target);
-    bool findEntry(const DataRecord* targetKey, DataRecord* target);
+    bool findEntry(const string targetKey, DataRecord*& target);
+    bool findEntry(const DataRecord* targetKey, DataRecord*& target);
     void insert(DataRecord* star);
-    void remove(const DataRecord* star);
-    void clearArray(HashedNode<DataRecord*>* ArrPtr);
+    bool remove(const DataRecord* star);
+    void clearArray();
     string printHashSequence(const string key);
     void printHash();
 

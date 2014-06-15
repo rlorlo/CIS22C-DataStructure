@@ -20,16 +20,17 @@ class DataBase
 private:
 	BinarySearchTree<pointerToDataRecord>* DataTree;	//pointer to BST
     HashedTable* DataHash;								//pointer to Hashed table
-	LinkedStack<DataRecord*>* DataStack;				//pointer to Stack
+	StackInterface<DataRecord*>* DataStack;				//pointer to Stack
 	int count;
     
 public:
 	DataBase() : DataStack(0), DataTree(0), count(0), DataHash(0) {};// { DataHash = new HashedTable(50); }
     ~DataBase(){}; //!!!!!delete
-	void Allocation() {DataHash = new HashedTable(count); DataTree = new BinarySearchTree<pointerToDataRecord>; }
+	void Allocation() { DataHash = new HashedTable(count); DataTree = new BinarySearchTree<pointerToDataRecord>; DataStack = new LinkedStack<DataRecord*>; }
+	void Deallocation() { delete DataHash; delete DataTree; delete DataStack; }
 	BinarySearchTree<pointerToDataRecord>* accessTree() const { return DataTree; }
 	HashedTable* accessHash() const { return DataHash; }
-	LinkedStack<DataRecord*>* accesStack() const { return DataStack; }
+	StackInterface<DataRecord*>* accesStack() const { return DataStack; }
 	void incrementCount() {count++;}
 	/*void IncArraySize() {arraySize++};
 	void DecArraySize() {arraySize--};

@@ -163,7 +163,7 @@ int HashedTable::GetNum() {
 }
 
 
-bool HashedTable::findEntry(const string targetKey, DataRecord* target){
+bool HashedTable::findEntry(const string targetKey, DataRecord*& target){
     
     int index= hash(targetKey);
     int ColResCounter=0;
@@ -187,14 +187,14 @@ bool HashedTable::findEntry(const string targetKey, DataRecord* target){
     return false;
 }
 
-bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord* target){
+bool HashedTable::findEntry(const DataRecord* targetKey, DataRecord*& target){
     
     int index= hash(targetKey);
     int ColResCounter=0;
     
     
     while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) && ArrPtr[index].getItem()!=0){
-        if( (ArrPtr[index].getItem()) == targetKey)
+        if( (ArrPtr[index].getItem()->get_name()) == targetKey->get_name())
         {
             cout<<targetKey<<" found at "<<index<<endl;
             target=ArrPtr[index].getItem();
@@ -234,7 +234,7 @@ void HashedTable::insert(DataRecord* star){
         
     if (ArrPtr[index].getStatus()!=1){
         ArrPtr[index].setItem(star);
-        cout<<star->get_name()<<" inserted at "<<index<<endl;
+        //cout<<star->get_name()<<" inserted at "<<index<<endl;
         return;//shouldn't use break, should use return since we added it.
         }
     else{
@@ -243,20 +243,20 @@ void HashedTable::insert(DataRecord* star){
         }
     }
     
-//    cout<<"Count: "<<count<<endl;
+//   cout<<"Count: "<<count<<endl;
     
 }
         
-void HashedTable::remove(const DataRecord* star){
+bool HashedTable::remove(const DataRecord* star){ //RO add switched to bool statement
     int ColResCount=0;
     int index= hash(star);
     
-    cout<<"Removing "<<star->get_name()<<endl;
+    //cout<<"Removing "<<star->get_name()<<endl;
     while (ArrPtr[index].getStatus()!=0 && ColResCount<100){
-        if (ArrPtr[index].getItem()==star){
+        if (ArrPtr[index].getItem()->get_name()==star->get_name()){
             ArrPtr[index].setItem(0);
             ArrPtr[index].setStatus(-1);
-            return;
+            return true;
         }
         else
         {
@@ -266,17 +266,27 @@ void HashedTable::remove(const DataRecord* star){
         }
     }
 
-    cout<<"\nError: entry not found\n";
-    
+//    cout<<"\nError: entry not found\n";
+	return false;
 }
 
 
-
+/*****************************************************************
+shouldn't need to pass in table.
+******************************************************************
 void HashedTable::clearArray(HashedNode<DataRecord*>* Table){
-    
+
+for(int i=0; i<ArrSize; i++){
+Table[i].deleteStar();
+Table[i].setStatus(0);
+Table[i].setItem(0);
+}*/
+
+
+void HashedTable::clearArray(){
     for(int i=0; i<ArrSize; i++){
-        Table[i].deleteStar();
-        Table[i].setStatus(0);
-        Table[i].setItem(0);
+		ArrPtr->deleteStar();
+		ArrPtr->setStatus(0);
+		ArrPtr->setItem(0);
     }
 }
