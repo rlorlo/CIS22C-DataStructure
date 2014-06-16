@@ -223,6 +223,7 @@ string Menu::List(const DataBase& d, string choice)
 		else if (choice == "h")
 		{
 			//return d.accessHash()->printHash();
+			return "hash";
 		}
 		else return "wrong choice\n";
 	}
@@ -283,9 +284,9 @@ void Menu::Save(const DataBase& d)//, string fileName)
 {
 	//clears undo
 	d.accesStack()->clear();
-	/*save to file output
+	//save to file output
 	ofstream File;
-	string fileName = "brightstars.txt";
+	string fileName = "tester.txt";
 	File.open(fileName);
 	while (!File)
 	{
@@ -294,5 +295,5 @@ void Menu::Save(const DataBase& d)//, string fileName)
 		File.open(fileName);
 	}
 	//d.accessTree()->inOrder(filePrint); // this needs to be hash table instead of tree.
-	File.close();*/
+	File.close();
 }

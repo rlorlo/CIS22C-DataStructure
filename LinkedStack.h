@@ -26,7 +26,7 @@ public:
 	bool pop();
 	int size() const {return count;}
 	bool peek(ItemType& var) const;
-	void clear() { while (count != 0) { pop(); } };
+	void clear() { while (!isEmpty()) { pop(); } };
 }; 
 
 /////////////// add to this class so it's not an abstract class

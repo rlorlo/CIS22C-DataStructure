@@ -42,8 +42,6 @@ public:
 	void ChoiceFunc();
 };
 
-
-
 void UserInterface::PrintMenu()
 {
 	cout << "Main menu" << endl;
