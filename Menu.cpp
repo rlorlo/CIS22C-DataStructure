@@ -3,7 +3,9 @@
 #include <fstream>
 #include <sstream>
 
-//template <typename T> string tostr(const T& t) { ostringstream os; os<<t; return os.str(); } 
+string globalString;
+
+template <typename T> string tostr(const T& t) { ostringstream os; os<<t; return os.str(); } 
 string Menu::FloatToStr(float Num)
 {
 	ostringstream ss;
@@ -198,30 +200,56 @@ string Menu::Display(const DataBase& d, string starToDisplay)
 	}
 	else return "Star is not found\n";
 }
-/*
-string Menu::List(const DataBase& d)
+
+void displayList(pointerToDataRecord & p)
+{
+	globalString = globalString + p.get_pointer()->get_name() + "("
+		+ tostr(p.get_pointer()->get_Distance()) + ")\n";
+}
+
+string Menu::List(const DataBase& d, string choice)
 {
 	//prompt user to decide which data to list
-	cout << "h. for hash sequence\ns. for sorted sequence\n";
-	string input;
-	cin >> input;
-	if (input == "h")
-	{
-		cout << "print hash";
-		d.accessHash()->printHash();
-	}
+	globalString = "";
+	if (d.accessTree()->isEmpty())
+		return "No stars in DataBase\n";
 	else
-		print sorted
-		d.accessTree->inOrder(display);
-		cout << "inorder";
+	{
+		if (choice == "b")
+		{
+			d.accessTree()->inOrder(displayList);
+			return globalString;
+		}
+		else if (choice == "h")
+		{
+			//return d.accessHash()->printHash();
+		}
+		else return "wrong choice\n";
+	}
+}
+
+void displayTree(pointerToDataRecord & p, int level)
+{
+	string tempStr = "";
+	string tempName = p.get_pointer()->get_name();
+	if (level>0)
+	{
+		for (int i = 0; i<level; i++)
+		{
+			tempStr = tempStr + "   -";
+		}
+	}
+	tempStr = tempStr + tempName[0] + tempName[1] + tempName[2];
+	globalString = globalString + tempStr + "\n";
 }
 
 string Menu::PrintTree(const DataBase& d)
 {
-	//print indented tree
-	d.accessTree()->printIndentedTree(Display);
-	cout << "print indented tree";
-}*/
+	globalString = "";
+	int level = 1;
+	d.accessTree()->printIndentedTree(d.accessTree()->getRootPtr(), level, displayTree);
+	return globalString;
+}
 
 string Menu::HashStatistic(const DataBase& f)
 {

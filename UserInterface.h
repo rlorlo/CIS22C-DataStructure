@@ -223,12 +223,12 @@ void UserInterface::ChoiceFunc()
 			cin >> Choice2;
 			cout << endl;
 		}
-		//cout << myFunc.List(myDB, Choice2);
+		cout << myFunc.List(myDB, Choice2);
 	}
 
 	else if ((openFCount > 0) && (strcmp(Choice, "p") == 0))
 	{
-		//cout << myFunc.PrintTree(myDB);
+		cout << myFunc.PrintTree(myDB);
 		cout << endl;
 	}
 

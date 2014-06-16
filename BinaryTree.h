@@ -152,9 +152,9 @@ void BinaryTree<ItemType>::printIndentedTree(BinaryNode<ItemType>* nodePtr, int 
 {
 	if (nodePtr != 0)//Recursion Terminator Statement
 	{
-		printIndentedTree(nodePtr->getRightPtr(), level + 1); //Recursion to print right branch
+		printIndentedTree(nodePtr->getRightPtr(), level + 1, visit); //Recursion to print right branch
 		visit(nodePtr->getItem(), level);
-		printIndentedTree(nodePtr->getLeftPtr(), level + 1); //Recursion to print left branch
+		printIndentedTree(nodePtr->getLeftPtr(), level + 1, visit); //Recursion to print left branch
 	}
 }
 

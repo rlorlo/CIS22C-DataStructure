@@ -26,7 +26,7 @@ public:
 	string Display(const DataBase&, string starToDisplay);
 	//(4). List data in hash table sequence
 	//(5). List data in key sequence (sorted)
-	string List(const DataBase&);
+	string List(const DataBase&, string choice);
 	//(6). Print indented tree
 	string PrintTree(const DataBase&);
 	//(7). Hash statistics
