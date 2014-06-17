@@ -88,13 +88,8 @@ void UserInterface::ChoiceFunc()
 				myFunc.Save(myDB);
 
 			}
-		}
-		/***********************************************************************************************
-		Need to add something here to deallocate memory already  from the three data structures
-		*********************************************************************************************** */
-		else
-		{
 			myDB.Deallocation();
+			myDB.clearCount();
 		}
 		while (cmp != "File opened successfully \n")
 		{
