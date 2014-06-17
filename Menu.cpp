@@ -229,7 +229,11 @@ string Menu::List(const DataBase& d, string choice)
 	}
 }
 
+<<<<<<< HEAD
+void displayTree(pointerToDataRecord p, int level)
+=======
 void displayTree(pointerToDataRecord & p, int level)
+>>>>>>> FETCH_HEAD
 {
 	string tempStr = "";
 	string tempName = p.get_pointer()->get_name();

@@ -38,7 +38,11 @@ int HashedTable::hash(const DataRecord* A){
     char word[100];
 
 	//string test = A->get_name().c_str();
+<<<<<<< HEAD
+	strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+=======
 	strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+>>>>>>> FETCH_HEAD
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
@@ -54,7 +58,7 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     
-    strcpy_s(word,(target.c_str()));
+    strcpy(word,(target.c_str()));
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
