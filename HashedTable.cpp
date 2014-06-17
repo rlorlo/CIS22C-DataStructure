@@ -20,11 +20,7 @@
 class DataRecord;
 
 HashedTable::HashedTable(int numNodes) {
-<<<<<<< HEAD
 	int tempArray[10] = {71,173,281,409,541,659,809,941,1069,1151};
-=======
-	int tempArray[10] = {73,107,127,179,233,283,337,379,419,1016};
->>>>>>> FETCH_HEAD
 	for(int i =0;i<10;i++)
 		primeArray[i] = tempArray[i];
     count=numNodes;
@@ -42,11 +38,7 @@ int HashedTable::hash(const DataRecord* A){
     char word[100];
 
 	//string test = A->get_name().c_str();
-<<<<<<< HEAD
 	strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
-=======
-	strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
->>>>>>> FETCH_HEAD
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
@@ -62,7 +54,7 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     
-    strcpy_s(word,(target.c_str()));
+    strcpy(word,(target.c_str()));
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
@@ -260,25 +252,17 @@ void HashedTable::insert(DataRecord* star){
     if (ArrPtr[index].getStatus()!=1){
         ArrPtr[index].setItem(star);
         //cout<<star->get_name()<<" inserted at "<<index<<endl;
-<<<<<<< HEAD
-        ColCount=ColCount+ColResCount;
-        ArrPtr[index].setResCount(ColResCount);
-        
+		ColCount=ColCount+ColResCount;
     //	cout<<ColCount<<endl;
-=======
->>>>>>> FETCH_HEAD
         return;//shouldn't use break, should use return since we added it.
         }
     else{
         ColResCount++;
+		ArrPtr[index].increResCount();
         index=ColRes(index, ColResCount);
         }
     }
-<<<<<<< HEAD
 	
-=======
-    
->>>>>>> FETCH_HEAD
 //   cout<<"Count: "<<count<<endl;
     
 }
@@ -292,12 +276,8 @@ bool HashedTable::remove(const DataRecord* star){ //RO add switched to bool stat
         if (ArrPtr[index].getItem()->get_name()==star->get_name()){
             ArrPtr[index].setItem(0);
             ArrPtr[index].setStatus(-1);
-<<<<<<< HEAD
 			ColCount=ColCount-ArrPtr[index].getColResCount();
 	        return true;
-=======
-            return true;
->>>>>>> FETCH_HEAD
         }
         else
         {

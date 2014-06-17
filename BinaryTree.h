@@ -141,13 +141,8 @@ template<class ItemType>
 BinaryTree<ItemType> & BinaryTree<ItemType>::operator=(const BinaryTree<ItemType> & sourceTree)
 {
 	this->clear();
-<<<<<<< HEAD
 	rootPtr = copyTree(sourceTree.rootPtr);
 	count = sourceTree.count;
-=======
-	this.rootPtr = copyTree(sourceTree.rootPtr);
-	this.count = sourceTree.count;
->>>>>>> FETCH_HEAD
 	return *this;
 }
 
