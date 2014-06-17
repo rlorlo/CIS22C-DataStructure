@@ -1,12 +1,19 @@
 //Main.cpp
 //Created By Richard Orlowski
 
-#include "DataBase.h"
-#include "menuPropmt.h"
+#include "UserInterface.h"
 
 int main()
 {
-	DataBase Stars;
-	Menu run;
 
+	UserInterface myUI;
+
+	myUI.Choice[0] = 'y';
+	while (strcmp(myUI.Choice,"q") != 0)
+	{
+        myUI.PrintMenu();
+        cin >> myUI.Choice;
+		myUI.ChoiceFunc();
+        cout << endl;
+    }
 }

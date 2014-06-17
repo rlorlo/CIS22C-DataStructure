@@ -17,20 +17,26 @@
 
 class DataBase
 {
-protected:
-	BinarySearchTree<pointerToDataRecord>* DataTree; //pointer to BST
-    HashedTable* DataHash;      //pointer to Hashed table
-	LinkedStack<DataRecord*>* DataStack; // pointer to Stack
-    int arraySize;
-    int Count;
+private:
+	BinarySearchTree<pointerToDataRecord>* DataTree;	//pointer to BST
+    HashedTable* DataHash;								//pointer to Hashed table
+	StackInterface<DataRecord*>* DataStack;				//pointer to Stack
+	int count;
     
 public:
-    //reads file, creates all stars in memory dynamically, fills DataTree and DataHash with pointers to stars.
-	DataBase();
-    ~DataBase(){}; //!!!!!delete
+	DataBase() : DataStack(0), DataTree(0), count(0), DataHash(0) {};// { DataHash = new HashedTable(50); }
+    //~DataBase(){}; //don't need since we did no allocation in constructor.
+	void Allocation() { DataHash = new HashedTable(count); DataTree = new BinarySearchTree<pointerToDataRecord>; DataStack = new LinkedStack<DataRecord*>; }
+	void Deallocation() { delete DataHash; delete DataTree; delete DataStack; }
 	BinarySearchTree<pointerToDataRecord>* accessTree() const { return DataTree; }
 	HashedTable* accessHash() const { return DataHash; }
-	LinkedStack<DataRecord*>* accesStack() const { return DataStack; }	
+	StackInterface<DataRecord*>* accesStack() const { return DataStack; }
+	void incrementCount() {count++;}
+	void decrementCount() { count--; };
+	int getCount() const { return count; };
+	/*void IncArraySize() {arraySize++};
+	void DecArraySize() {arraySize--};
+	int getArraySize() {return arraySize};*/
 };
 
 

@@ -39,7 +39,7 @@ public:
 	void postOrder(void visit(ItemType &)) const	{ _postorder(visit, rootPtr); }
 
 	// displays the indented tree
-	void printIndentedTree(BinaryNode<ItemType>* nodePtr, int level, void visit(ItemType &anItem, int lvl));
+	void printIndentedTree(BinaryNode<ItemType>* nodePtr, int level, void visit(ItemType anItem, int lvl));
 
 	// abstract functions to be implemented by derived class
 	virtual bool insert(const ItemType &newData) = 0;
@@ -141,20 +141,20 @@ template<class ItemType>
 BinaryTree<ItemType> & BinaryTree<ItemType>::operator=(const BinaryTree<ItemType> & sourceTree)
 {
 	this->clear();
-//TR	this.rootPtr = copyTree(sourceTree.rootPtr);
-//TR	this.count = sourceTree.count;
+	rootPtr = copyTree(sourceTree.rootPtr);
+	count = sourceTree.count;
 	return *this;
 }
 
 
 template<class ItemType>
-void BinaryTree<ItemType>::printIndentedTree(BinaryNode<ItemType>* nodePtr, int level, void visit(ItemType &anItem, int lvl))
+void BinaryTree<ItemType>::printIndentedTree(BinaryNode<ItemType>* nodePtr, int level, void visit(ItemType anItem, int lvl))
 {
 	if (nodePtr != 0)//Recursion Terminator Statement
 	{
-		printIndentedTree(nodePtr->getRightPtr(), level + 1); //Recursion to print right branch
+		printIndentedTree(nodePtr->getRightPtr(), level + 1, visit); //Recursion to print right branch
 		visit(nodePtr->getItem(), level);
-		printIndentedTree(nodePtr->getLeftPtr(), level + 1); //Recursion to print left branch
+		printIndentedTree(nodePtr->getLeftPtr(), level + 1, visit); //Recursion to print left branch
 	}
 }
 

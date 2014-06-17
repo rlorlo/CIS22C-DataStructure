@@ -23,26 +23,26 @@ protected:
     HashedNode<DataRecord*>* ArrPtr;
     int GetNum();
     int ArrSize;
-    int count=0;
-    //    int primeArray[10]={73,107,127,179,233,283,337,379,419,457};
-    int primeArray[10]={5,20,50,125,300,650,900,1000,1250,1500};
+    int count;
+	int ColCount;
+    int primeArray[10];
 
     
     
 public:
-    HashedTable(int count =0);
+	HashedTable(int numNodes=0);
     ~HashedTable() {delete ArrPtr;}
     void displayStats();
     int hash(const DataRecord* nodePtr);
     int hash(const string nodePtr);
     int ColRes(int index, int count);
-    bool findEntry(const string targetKey, DataRecord* target);
-    bool findEntry(const DataRecord* targetKey, DataRecord* target);
+    bool findEntry(const string targetKey, DataRecord*& target);
+    bool findEntry(const DataRecord* targetKey, DataRecord*& target);
     void insert(DataRecord* star);
-    void remove(const DataRecord* star);
-    void clearArray(HashedNode<DataRecord*>* ArrPtr);
+    bool remove(const DataRecord* star);
+    void clearArray();
     string printHashSequence(const string key);
-    void printHash();
+    string printHash();
 
 };
 
