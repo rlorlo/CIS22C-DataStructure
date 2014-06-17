@@ -32,8 +32,9 @@ public:
 	HashedTable* accessHash() const { return DataHash; }
 	StackInterface<DataRecord*>* accesStack() const { return DataStack; }
 	void incrementCount() {count++;}
-	void decrementCount() { count--; };
-	int getCount() const { return count; };
+	void decrementCount() { count--; }
+	int getCount() const { return count; }
+	void clearCount() { count = 0; }
 	/*void IncArraySize() {arraySize++};
 	void DecArraySize() {arraySize--};
 	int getArraySize() {return arraySize};*/
