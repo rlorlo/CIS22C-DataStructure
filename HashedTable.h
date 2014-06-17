@@ -24,13 +24,8 @@ protected:
     int GetNum();
     int ArrSize;
     int count;
-<<<<<<< HEAD
 	int ColCount;
     int primeArray[10];
-=======
-    //int primeArray[10];={73,107,127,179,233,283,337,379,419,457};
-    int primeArray[10];//={5,20,50,125,300,650,900,1000,1250,1500};
->>>>>>> FETCH_HEAD
 
     
     

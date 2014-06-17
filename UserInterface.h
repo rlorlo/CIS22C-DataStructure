@@ -40,7 +40,6 @@ public:
 	char Choice2[2];
 	void PrintMenu();
 	void ChoiceFunc();
-<<<<<<< HEAD
 	int count(const string & input);
 };
 
@@ -54,10 +53,6 @@ int UserInterface ::count(const string& input)
 	return Spaces;
 }
 
-=======
-};
-
->>>>>>> FETCH_HEAD
 void UserInterface::PrintMenu()
 {
 	cout << "Main menu" << endl;
@@ -119,7 +114,6 @@ void UserInterface::ChoiceFunc()
 		cin.clear();
 		cin.ignore();
 		getline(cin, name, '\n');
-<<<<<<< HEAD
 		while(count(name) > 2)
 		{
 			cout << "Not valid name (3 words maximum), enter new name: ";
@@ -128,15 +122,12 @@ void UserInterface::ChoiceFunc()
 			getline(cin, name);
         }
 
-=======
->>>>>>> FETCH_HEAD
 
 		if (!myFunc.Search(myDB, name)) //new addition
 		{
 			cout << "Enter Greek name: ";
 			cin.clear();
 			getline(cin, name2);
-<<<<<<< HEAD
 
 			while(count(name2) > 1)
 		{
@@ -145,8 +136,6 @@ void UserInterface::ChoiceFunc()
 			cin.ignore();
 			getline(cin, name2);
         }
-=======
->>>>>>> FETCH_HEAD
 			
 			cout << "Enter equatorial coordinates: ";
 			cout << "Right ascension, hours: ";
