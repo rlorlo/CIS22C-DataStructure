@@ -38,11 +38,16 @@ int HashedTable::hash(const DataRecord* A){
     char word[100];
 
 	//string test = A->get_name().c_str();
+<<<<<<< HEAD
 //<<<<<<< HEAD
 	strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
 //=======
 //	strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
 //>>>>>>> FETCH_HEAD
+=======
+
+	strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+>>>>>>> FETCH_HEAD
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
@@ -58,7 +63,7 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     
-    strcpy(word,(target.c_str()));
+    strcpy_s(word,(target.c_str()));
     
     for (int i=0; i<3; i++){
         index2=index2+(word[i]*(word[0])*(i+13));
@@ -314,4 +319,18 @@ void HashedTable::clearArray(){
 		ArrPtr->setStatus(0);
 		ArrPtr->setItem(0);
     }
+}
+
+void HashedTable::printOutToFile(ostream& o)
+{
+	int count = 0;
+	for (int i = 0; i<ArrSize; i++){
+		if (ArrPtr[i].getItem() != 0)
+		{
+			count++;
+			DataRecord star = *ArrPtr[i].getItem();
+			o << right << setw(3) << count << ".  " << left << setw(28) << star.get_name() << setw(23) << star.get_name2() << setw(3) << star.get_RAs_h() << setw(3) << star.get_RAs_m() <<
+				setw(9) << star.get_Dec() << setw(14) << star.get_SpT() << setw(6) << right << star.get_VisM() << setw(8) << star.get_AbsM() << setw(6) << star.get_Distance() << endl;
+		}
+	}
 }

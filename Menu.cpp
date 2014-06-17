@@ -82,7 +82,7 @@ string Menu::OpenFile(DataBase& d, string fileName)
        
 	    if(isdigit(buffer[0]))
 		{
-			n2 = "NoName";
+			n2 = "";
 		}
 		else
 		{
@@ -229,11 +229,17 @@ string Menu::List(const DataBase& d, string choice)
 	}
 }
 
+<<<<<<< HEAD
 //<<<<<<< HEAD
 //void displayTree(pointerToDataRecord p, int level)
 //=======
 void displayTree(pointerToDataRecord p, int level)
 //>>>>>>> FETCH_HEAD
+=======
+
+void displayTree(pointerToDataRecord & p, int level)
+
+>>>>>>> FETCH_HEAD
 {
 	string tempStr = "";
 	string tempName = p.get_pointer()->get_name();
@@ -299,6 +305,7 @@ void Menu::Save(const DataBase& d)//, string fileName)
 		cin >> fileName;
 		File.open(fileName);
 	}
+	d.accessHash()->printOutToFile(File);
 	//d.accessTree()->inOrder(filePrint); // this needs to be hash table instead of tree.
 	File.close();
 }
