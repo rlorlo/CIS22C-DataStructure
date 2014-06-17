@@ -5,9 +5,13 @@
 
 int main()
 {
+<<<<<<< HEAD
 
 	UserInterface myUI;
 
+=======
+	UserInterface myUI;
+>>>>>>> FETCH_HEAD
 	myUI.Choice[0] = 'y';
 	while (strcmp(myUI.Choice,"q") != 0)
 	{

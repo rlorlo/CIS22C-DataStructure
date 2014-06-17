@@ -222,14 +222,22 @@ string Menu::List(const DataBase& d, string choice)
 		}
 		else if (choice == "h")
 		{
+<<<<<<< HEAD
 			return d.accessHash()->printHash();
+=======
+			//return d.accessHash()->printHash();
+>>>>>>> FETCH_HEAD
 			return "hash";
 		}
 		else return "wrong choice\n";
 	}
 }
 
+<<<<<<< HEAD
 void displayTree(pointerToDataRecord  p, int level)
+=======
+void displayTree(pointerToDataRecord & p, int level)
+>>>>>>> FETCH_HEAD
 {
 	string tempStr = "";
 	string tempName = p.get_pointer()->get_name();
@@ -237,24 +245,38 @@ void displayTree(pointerToDataRecord  p, int level)
 	{
 		for (int i = 0; i<level; i++)
 		{
+<<<<<<< HEAD
 			tempStr = tempStr + "\t  ";
 		}
 	}
 	tempStr = tempStr + tempName;
+=======
+			tempStr = tempStr + "   -";
+		}
+	}
+	tempStr = tempStr + tempName[0] + tempName[1] + tempName[2];
+>>>>>>> FETCH_HEAD
 	globalString = globalString + tempStr + "\n";
 }
 
 string Menu::PrintTree(const DataBase& d)
 {
 	globalString = "";
+<<<<<<< HEAD
 	int level = 0;
+=======
+	int level = 1;
+>>>>>>> FETCH_HEAD
 	d.accessTree()->printIndentedTree(d.accessTree()->getRootPtr(), level, displayTree);
 	return globalString;
 }
 
 string Menu::HashStatistic(const DataBase& f)
 {
+<<<<<<< HEAD
 	f.accessHash()->displayStats();
+=======
+>>>>>>> FETCH_HEAD
 	//print hash statistic
 	return "hash statisitics";
 }

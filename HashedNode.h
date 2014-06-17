@@ -14,7 +14,11 @@ private:
    ItemType star;
    int status;
    int colResCount;
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> FETCH_HEAD
 public:
 	HashedNode()										{star = 0; status=0; colResCount=0;}
 	HashedNode(const ItemType anItem)				{star = anItem; status=1, colResCount=0;}
@@ -25,7 +29,11 @@ public:
     ItemType getItem()                      {return star;}
     void deleteStar()                       {star=0; status=-1;}
 	int getColResCount() const				{return colResCount;}//added
+<<<<<<< HEAD
 	void setResCount(int count)					{colResCount=count;}//added
+=======
+	void increResCount()					{colResCount++;}//added
+>>>>>>> FETCH_HEAD
 };
 
 #endif
