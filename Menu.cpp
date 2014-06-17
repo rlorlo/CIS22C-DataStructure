@@ -82,7 +82,7 @@ string Menu::OpenFile(DataBase& d, string fileName)
        
 	    if(isdigit(buffer[0]))
 		{
-			n2 = "NoName";
+			n2 = "";
 		}
 		else
 		{
@@ -295,6 +295,7 @@ void Menu::Save(const DataBase& d)//, string fileName)
 		cin >> fileName;
 		File.open(fileName);
 	}
+	d.accessHash()->printOutToFile(File);
 	//d.accessTree()->inOrder(filePrint); // this needs to be hash table instead of tree.
 	File.close();
 }

@@ -42,6 +42,7 @@ public:
     bool remove(const DataRecord* star);
     void clearArray();
     string printHashSequence(const string key);
+	void printOutToFile(ostream& o);
     string printHash();
 
 };

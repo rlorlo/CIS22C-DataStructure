@@ -311,3 +311,17 @@ void HashedTable::clearArray(){
 		ArrPtr->setItem(0);
     }
 }
+
+void HashedTable::printOutToFile(ostream& o)
+{
+	int count = 0;
+	for (int i = 0; i<ArrSize; i++){
+		if (ArrPtr[i].getItem() != 0)
+		{
+			count++;
+			DataRecord star = *ArrPtr[i].getItem();
+			o << right << setw(3) << count << ".  " << left << setw(28) << star.get_name() << setw(23) << star.get_name2() << setw(3) << star.get_RAs_h() << setw(3) << star.get_RAs_m() <<
+				setw(9) << star.get_Dec() << setw(14) << star.get_SpT() << setw(6) << right << star.get_VisM() << setw(8) << star.get_AbsM() << setw(6) << star.get_Distance() << endl;
+		}
+	}
+}
