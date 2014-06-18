@@ -70,27 +70,30 @@ int HashedTable::hash(const string target){
 
 int HashedTable::ColRes(int index, int count, const DataRecord* target){
     int newIndex;
+    double newIndex2;
     char word[40];
     int size=(target->get_name()).length();
 	strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
     //XCODE	strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
 
     
-    newIndex=((word[7*size/8-count]+word[size-count]*count))%ArrSize;
+    newIndex2=3*count*word[(7*count)%size]+5*count*word[9/11*size]%ArrSize;
     //    newIndex=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
-
+    newIndex=((static_cast<int>(newIndex2)));
     return newIndex;
 }
 
 int HashedTable::ColRes(int index, int count, const string target){
     int newIndex;
+    double newIndex2;
     char word[40];
     int size=target.length();
     strcpy(word,(target.c_str()));
     //XCODE    strcpy_s(word,(target.c_str()));
 	
-      newIndex=((word[7*size/8-count]+word[size-count]*count))%ArrSize;
+    newIndex2=3*count*word[(7*count)%size]+5*count*word[9/11*size]%ArrSize;
 //    newIndex=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
+    newIndex=((static_cast<int>(newIndex2)));
     return newIndex;
 }
 
@@ -136,6 +139,7 @@ string HashedTable::printHashSequence(const string key){
 
 string HashedTable::displayStats() {
     stringstream output;
+    int i;
     
     float load = (count*100.0)/ArrSize;
     
@@ -145,12 +149,14 @@ string HashedTable::displayStats() {
     output<< "Total number of collisions: "<< ColCount<<endl;
     output<< "Max Number of Probes: "<<MaxProbes<<endl;
     output<< "List of Stars with max probes: "<<endl;
-    for (int i=0; i<MaxProbeVector.size(); i++){
+    for (i=0; i<MaxProbeVector.size(); i++){
             output<<MaxProbeVector[i]->get_name()<<endl;
     }
     
     output<<endl;
     cout << output.str();
+    
+    cout<<"Bonus: " <<MaxProbeVector[i+1]->get_name()<<endl;
     
     return output.str();
 }
