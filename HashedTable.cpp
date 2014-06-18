@@ -28,6 +28,7 @@ HashedTable::HashedTable(int numNodes) {
     MaxProbes=0;
     ArrSize=GetNum(numNodes);
     ArrPtr = new HashedNode<DataRecord*>[ArrSize];
+    clearProbeArr();
 
 }
 
@@ -37,8 +38,8 @@ int HashedTable::hash(const DataRecord* A){
     double index2=0;
     char word[40];
     int size=(A->get_name()).length();
-	//xcode strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
-    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+    strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+	//xcode    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
     
     for (int i=0; i<3; i++){
         index2=index2+((word[(1+i)/size])*((word[(0+i)/size])-size));
@@ -56,8 +57,8 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     int size=target.length();
-    //strcpy(word,(target.c_str()));
-	strcpy_s(word,(target.c_str()));
+    strcpy(word,(target.c_str()));
+//xcode	strcpy_s(word,(target.c_str()));
     
     for (int i=0; i<3; i++){
         index2=index2+(word[(1+i)/size]*((word[(0+i)/size])-size));
@@ -73,8 +74,8 @@ int HashedTable::ColRes(int index, int count, const DataRecord* target){
     double newIndex2;
     char word[40];
     int size=(target->get_name()).length();
-//	xcodestrcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
-    strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+    strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+//	xcode     strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
 
     
     newIndex2=3*count*word[(7*count)%size]+5*count*word[9/11*size]%ArrSize;
@@ -88,8 +89,8 @@ int HashedTable::ColRes(int index, int count, const string target){
     double newIndex2;
     char word[40];
     int size=target.length();
-    //xcode strcpy(word,(target.c_str()));
-    strcpy_s(word,(target.c_str()));
+    strcpy(word,(target.c_str()));
+     //xcode   strcpy_s(word,(target.c_str()));
 	
     newIndex2=3*count*word[(7*count)%size]+5*count*word[9/11*size]%ArrSize;
 //    newIndex=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
@@ -139,7 +140,7 @@ string HashedTable::printHashSequence(const string key){
 
 string HashedTable::displayStats() {
     stringstream output;
-    int i;
+    
     
     float load = (count*100.0)/ArrSize;
     
@@ -151,14 +152,14 @@ string HashedTable::displayStats() {
     output<< "List of Stars with max probes: "<<endl;
 
 //    for (i=0; i<MaxProbeVector.size(); i++){
-     for (size_t i=0; i<MaxProbeVector.size(); i++){
-            output<<MaxProbeVector[i]->get_name()<<endl;
+     for (int i=0; i<40; i++){
+         if(MaxProbeArr[i]!=0){
+            output<<MaxProbeArr[i]->get_name()<<endl;
+         }
     }
     
     output<<endl;
     cout << output.str();
-    
-    cout<<"Bonus: " <<MaxProbeVector[i+1]->get_name()<<endl;
     
     return output.str();
 }
@@ -239,11 +240,12 @@ void HashedTable::insert(DataRecord* star){
         //cout<<star->get_name()<<" inserted at "<<index<<endl;
 		ColCount=ColCount+ColResCount;
         if (ColResCount>MaxProbes){
-            MaxProbeVector.clear();
+            clearProbeArr();
             MaxProbes=ColResCount;
             }
         if (ColResCount==MaxProbes){
-            MaxProbeVector.push_back(star);
+            cout<<ColResCount<<star->get_name()<<endl;
+            addToProbeArr(star);
         }
         return;
     }
@@ -257,8 +259,60 @@ void HashedTable::insert(DataRecord* star){
 //   cout<<"Count: "<<count<<endl;
     
 }
+
+bool HashedTable::clearProbeArr(){
+    for (int i=0; i<40; i++){
+        MaxProbeArr[i]=0;
+    }
+    
+    return true;
+}
+
+bool HashedTable::addToProbeArr(DataRecord* star){
+    for (int i=0; i<40; i++){
+        if( MaxProbeArr[i]==0){
+            MaxProbeArr[i]=star;
+            return true;
+        }
         
-bool HashedTable::remove(const DataRecord* star){
+    }
+    return false;
+}
+
+bool HashedTable::removeFromProbeArr(DataRecord* star){
+    int i;
+    bool deleted=false;
+    for (i=0; i<40; i++){
+        if( MaxProbeArr[i]==star){
+            MaxProbeArr[i]=0;
+            deleted=true;
+        }
+        if (deleted==true){
+            if (MaxProbeArr[i+1]!=0){
+                MaxProbeArr[i]=MaxProbeArr[i+1];
+            }
+            if (MaxProbeArr[0]==0){
+                MaxProbes=0;
+                for (int j=0; j<ArrSize; j++){
+                    if (ArrPtr[j].getColResCount()>MaxProbes){
+                        clearProbeArr();
+                        MaxProbes=ArrPtr[j].getColResCount();
+                    }
+                if (ArrPtr[j].getColResCount()==MaxProbes){
+                    cout<<ArrPtr[j].getColResCount()<<star->get_name()<<endl;
+                    addToProbeArr(ArrPtr[j].getItem());
+                }
+                }
+            }
+            else return true;
+        }
+    }
+    
+    return false;
+}
+
+
+bool HashedTable::remove(DataRecord* star){
     int ColResCount=0;
     int index= hash(star);
     
@@ -267,9 +321,9 @@ bool HashedTable::remove(const DataRecord* star){
             ArrPtr[index].setItem(0);
             ArrPtr[index].setStatus(-1);
 			ColCount=ColCount-ArrPtr[index].getColResCount();
-            for (size_t i=0; i<MaxProbeVector.size(); i++){
-                if (MaxProbeVector[i]->get_name() == star->get_name()){
-                    MaxProbeVector.erase(MaxProbeVector.begin()+(i-1));
+            for (size_t i=0; i<40; i++){
+                if (MaxProbeArr[i]->get_name() == star->get_name()){
+                    removeFromProbeArr(star);
                 }
             }
 	        return true;

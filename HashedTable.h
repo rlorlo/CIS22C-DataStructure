@@ -28,7 +28,7 @@ protected:
 	int ColCount;
     int MaxProbes;
     int primeArray[10];
-    vector<DataRecord*> MaxProbeVector;
+    DataRecord* MaxProbeArr[20];
 
     
     
@@ -43,8 +43,11 @@ public:
     bool findEntry(string targetKey, DataRecord*& target);
     bool findEntry(DataRecord* targetKey, DataRecord*& target);
     void insert(DataRecord* star);
-    bool remove(const DataRecord* star);
+    bool remove(DataRecord* star);
     void clearArray();
+    bool clearProbeArr();
+    bool addToProbeArr(DataRecord* star);
+    bool removeFromProbeArr(DataRecord* star);
     string printHashSequence(const string key);
 	void printOutToFile(ostream& o);
     string printHash();
