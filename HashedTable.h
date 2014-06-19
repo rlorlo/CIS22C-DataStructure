@@ -28,7 +28,7 @@ protected:
 	int ColCount;
     int MaxProbes;
     int primeArray[10];
-    DataRecord* MaxProbeArr[20];
+    vector<string> MaxProbeArr;
 
     
     
