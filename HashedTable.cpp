@@ -100,11 +100,8 @@ string HashedTable::printHash() {
 	stringstream temp;
 
     for (int i=0; i<ArrSize; i++){
-  //TR CHANGED THIS FOR TESTING
-        if(ArrPtr[i].getItem()!=0)
-            temp << (ArrPtr[i].getItem())->get_name() << (ArrPtr[i].getColResCount()) << "\n";
-        else
-            temp << "---\n";
+    if(ArrPtr[i].getItem()!=0)
+	    temp << (ArrPtr[i].getItem())->get_name() << "\n";
     }
 	return temp.str();
 }
@@ -255,9 +252,8 @@ void HashedTable::insert(DataRecord* star){
 }
 
 bool HashedTable::removeFromProbeArr(DataRecord* star){
-    int i;
     bool deleted=false;
-    for (i=0; i<MaxProbeArr.size(); i++){
+    for (size_t i =0; i<MaxProbeArr.size(); i++){
 		if (MaxProbeArr[i] == star->get_name()){
 			MaxProbeArr.erase(MaxProbeArr.begin() + i);//the .begin means to start at beginning of array.
             deleted=true;
@@ -295,9 +291,10 @@ bool HashedTable::remove(DataRecord* star){
         if (ArrPtr[index].getItem()->get_name()==star->get_name()){
             ArrPtr[index].setItem(0);
             ArrPtr[index].setStatus(-1);
+			ColCount = ColCount - ArrPtr[index].getColResCount();
             ArrPtr[index].setColCount(0);
             
-			ColCount=ColCount-ArrPtr[index].getColResCount();
+			
 			for (size_t i = 0; i < MaxProbeArr.size(); i++){
                if (MaxProbeArr[i] == star->get_name()){
                     removeFromProbeArr(star);

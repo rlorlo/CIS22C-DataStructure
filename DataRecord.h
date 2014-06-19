@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -29,6 +30,16 @@ private:
 public:
 	//accessors
 	string get_name() const { return name; }
+	string get_con() const
+	{
+		string f = name;
+		string s;
+		istringstream iss(f);
+		iss >> s;
+		ostringstream oss;
+		oss << iss.rdbuf();
+		return oss.str();
+	}
 	string get_name2() const { return name2; }
 	float get_VisM() const { return VisM; }
 	float get_AbsM() const { return AbsM; }

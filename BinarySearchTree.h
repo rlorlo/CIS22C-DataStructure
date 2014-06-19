@@ -33,6 +33,8 @@ public:
 	bool remove(const ItemType & anEntry);
 	// find a target node
 	bool getEntry(const ItemType & target, ItemType & returnedItem) const;
+
+	int getEntryNext(const ItemType & target, ItemType & returnedItem, void visit(ItemType &, int n)) const;
 };
 
 
@@ -70,6 +72,23 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType & re
 		return true;
 	}
 	return false;
+}
+
+template<class ItemType>
+int BinarySearchTree<ItemType>::getEntryNext(const ItemType& anEntry, ItemType & returnedItem, void visit(ItemType &, int n)) const
+{
+	int n = 0;
+	BinaryNode<ItemType>* found = findNode(this->rootPtr, anEntry);
+	if (found)
+	{
+		do
+		{
+			n++;
+			visit(found->getItem(), n);
+			found = findNode(found->getRightPtr(), anEntry);
+		} while (found);
+	}
+	return n;
 }
 
 

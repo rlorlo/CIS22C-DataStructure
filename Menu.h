@@ -11,11 +11,13 @@
 
 #include"DataBase.h"
 #include <string>
+#include "StarPoint.h"
 
 class Menu
 {
 private:
-
+	StarPoint* pArray;
+	int number;
 public:
 	string OpenFile(DataBase& a, string fileName);
 	//(1). Add new data
@@ -41,6 +43,7 @@ public:
 	void Quit(DataBase& d);
 	string FloatToStr(float Num);
 	string IntToStr(int Num);
+	int getCon(const DataBase& d, string starName);
 
 
 

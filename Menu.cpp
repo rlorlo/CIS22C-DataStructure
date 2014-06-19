@@ -2,8 +2,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+//#include "StarPoint.h"
 
 string globalString;
+
+vector<StarPoint> V;
+
+void vecVisit(pointerToDataRecord2& p, int n);
 
 template <typename T> string tostr(const T& t) { ostringstream os; os<<t; return os.str(); } 
 string Menu::FloatToStr(float Num)
@@ -178,6 +183,8 @@ bool Menu::Delete(DataBase& d, string name) //need to pass bool
 		d.accessHash()->remove(Temp);
 		pointerToDataRecord Holder(Temp);
 		d.accessTree()->remove(Holder);
+		pointerToDataRecord2 Holder2(Temp);
+		d.accessTree2()->remove(Holder2);
 		return true;
 	}
 	return false;
@@ -256,7 +263,7 @@ string Menu::PrintTree(const DataBase& d)
 
 string Menu::HashStatistic(const DataBase& f)
 {
-	f.accessHash()->displayStats();
+	return f.accessHash()->displayStats();
 	//print hash statistic
 	return "hash statisitics";
 }
@@ -300,4 +307,33 @@ void Menu::Save(const DataBase& d)//, string fileName)
 	d.accessHash()->printOutToFile(File);
 	//d.accessTree()->inOrder(filePrint); // this needs to be hash table instead of tree.
 	File.close();
+}
+
+void vecVisit(pointerToDataRecord2& p, int n)
+{
+	//int Ra = p.get_pointer()->get_RAs_h()/15;
+
+	StarPoint newPoint;
+	newPoint.x = 30 * (n + 1);
+	newPoint.y = 100;
+	V.push_back(newPoint);
+}
+
+int Menu::getCon(const DataBase& d, string starName)
+{
+	V.clear();
+	number = 0;
+	DataRecord* NewRecord = new DataRecord;
+	NewRecord->set_name(starName);
+	pointerToDataRecord2 holder2find(NewRecord);
+	pointerToDataRecord2 holderMaster;
+	number = d.accessTree2()->getEntryNext(holder2find, holderMaster, vecVisit);
+
+	pArray = new StarPoint[number];
+	for (int j = 0; j<number; j++)
+	{
+		pArray[j] = V[j];
+	}
+
+	return number;
 }

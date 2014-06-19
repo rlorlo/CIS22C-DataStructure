@@ -20,10 +20,10 @@ public:
 };
 
 wxTextDialog::wxTextDialog(string text2print) 
-	:wxDialog(NULL, wxID_ANY, wxT("Print Text Dialog"), wxDefaultPosition, wxSize(900, 700))
+	:wxDialog(NULL, wxID_ANY, wxT("Print Text Dialog"), wxDefaultPosition, wxSize(900, 600))
 {
-	wxTextCtrl* txt = new wxTextCtrl(this, ID_TextDialog, wxEmptyString, wxDefaultPosition, wxSize(894, 630), wxTE_MULTILINE|wxHSCROLL);
-	wxButton* bPrintTree = new wxButton(this, wxID_EXIT2, wxT("OK"), wxPoint(460, 640), wxDefaultSize);
+	wxTextCtrl* txt = new wxTextCtrl(this, ID_TextDialog, wxEmptyString, wxDefaultPosition, wxSize(894, 530), wxTE_MULTILINE|wxHSCROLL);
+	wxButton* bPrintTree = new wxButton(this, wxID_EXIT2, wxT("OK"), wxPoint(400, 540), wxDefaultSize);
 	Connect(wxID_EXIT2, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(wxTextDialog::OnExitTextDialog) );
 
 	txt->AppendText(text2print);
