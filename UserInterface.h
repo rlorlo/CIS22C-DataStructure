@@ -226,7 +226,8 @@ void UserInterface::ChoiceFunc()
 		{
 			cout << "Delete Successful\n";
 		}
-		cout << "Data doesn't exists.";
+        else
+            cout << "Data doesn't exist.";
 	}
 
 	//stop add

@@ -35,8 +35,8 @@ int HashedTable::hash(const DataRecord* A){
     double index2=0;
     char word[40];
     int size=(A->get_name()).length();
-    //xcode    strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
-    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+    strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+    //xcode    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
     
     index2=index2+(word[(3)/size]*((word[(2)/size])-size));
     
@@ -51,8 +51,8 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     int size=target.length();
-    //xcode     strcpy(word,(target.c_str()));
-    strcpy_s(word,(target.c_str()));
+     strcpy(word,(target.c_str()));
+    //xcode    strcpy_s(word,(target.c_str()));
     
     
     index2=index2+(word[(3)/size]*((word[(2)/size])-size));
@@ -67,8 +67,8 @@ int HashedTable::ColRes(int index, int count, const DataRecord* target){
     double newIndex2;
     char word[40];
     int size=(target->get_name()).length();
-    //xcode    strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
-    strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+    strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+        //xcodestrcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
 
     //newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
     newIndex2=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
@@ -81,8 +81,8 @@ int HashedTable::ColRes(int index, int count, const string target){
     double newIndex2;
     char word[40];
     int size=target.length();
-    //xcode     strcpy(word,(target.c_str()));
-    strcpy_s(word,(target.c_str()));
+     strcpy(word,(target.c_str()));
+      //xcode  strcpy_s(word,(target.c_str()));
 
 //      newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
 //    newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
