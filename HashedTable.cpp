@@ -35,8 +35,8 @@ int HashedTable::hash(const DataRecord* A){
     double index2=0;
     char word[40];
     int size=(A->get_name()).length();
-strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
-    //xcode    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+    //xcode    strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
     
     index2=index2+(word[(3)/size]*((word[(2)/size])-size));
     
@@ -51,8 +51,8 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     int size=target.length();
- strcpy(word,(target.c_str()));
-    //xcode    strcpy_s(word,(target.c_str()));
+    //xcode     strcpy(word,(target.c_str()));
+    strcpy_s(word,(target.c_str()));
     
     
     index2=index2+(word[(3)/size]*((word[(2)/size])-size));
@@ -67,8 +67,8 @@ int HashedTable::ColRes(int index, int count, const DataRecord* target){
     double newIndex2;
     char word[40];
     int size=(target->get_name()).length();
-strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
-    //xcode    strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+    //xcode    strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+    strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
 
     //newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
     newIndex2=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
@@ -81,8 +81,8 @@ int HashedTable::ColRes(int index, int count, const string target){
     double newIndex2;
     char word[40];
     int size=target.length();
- strcpy(word,(target.c_str()));
-	// xcode    strcpy_s(word,(target.c_str()));
+    //xcode     strcpy(word,(target.c_str()));
+    strcpy_s(word,(target.c_str()));
 
 //      newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
 //    newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
@@ -159,30 +159,33 @@ string HashedTable::findChain(string star){
     int index=0;
     index = hash(star);
     
-    chain<<"Chain: \n"<<ArrPtr[index].getItem()->get_name()<<", ";
+    chain<<"Chain: \n";
     
-    while (ColResCount<MaxProbes){
+    while (ColResCount<MaxProbes+1){
         
-        if (ArrPtr[index].getStatus()!=1){
+        
+    if(ArrPtr[index].getStatus()==1){
+        if (ArrPtr[index].getItem()->get_name()==star){
             chain<<ArrPtr[index].getItem()->get_name()<<endl<<endl;
             return chain.str();
         }
         else{
+            chain<<ArrPtr[index].getItem()->get_name()<<", ";
             ColResCount++;
             index=ColRes(index, ColResCount, star);
-            if (ArrPtr[index].getStatus()==1){
-                chain<<ArrPtr[index].getItem()->get_name()<<", ";
+        }
+    }
+    else if (ArrPtr[index].getStatus()==-1){
+                chain<<"DATA DELETED, ";
+                ColResCount++;
+                index=ColRes(index, ColResCount, star);
             }
-            else if (ArrPtr[index].getStatus()==-1){
-                chain<<"Data deleted, ";
-            }
-            else if (ArrPtr[index].getStatus()==0){
-                chain<<"0, ";
+    else if (ArrPtr[index].getStatus()==0){
+                return "Chain not found\n";;
             }
         }
 
-    }
-        return "Chain not found";
+        return "Chain not found\n";
 }
 
 int HashedTable::GetNum(int numNodes) {
@@ -203,23 +206,19 @@ bool HashedTable::findEntry(string targetKey, DataRecord*& target){
     int ColResCounter=0;
     
     
-    while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) && ArrPtr[index].getItem()!=0){
-        if( (ArrPtr[index].getItem())->get_name() == targetKey)
-    {
-        //cout<<targetKey<<" found at "<<index<<endl;
-        target=ArrPtr[index].getItem();
-        return true;
-    }
-    else {
+    while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) ){
+        if(ArrPtr[index].getStatus()==1){
+            if( (ArrPtr[index].getItem())->get_name() == targetKey){
+                target=ArrPtr[index].getItem();
+                return true;
+            }
+        }
         ColResCounter++;
         index=ColRes(index, ColResCounter, targetKey);
-    	}
     }
-
-    //cout<<targetKey<<" not found\n";
-
     return false;
 }
+
 
 bool HashedTable::findEntry(DataRecord* targetKey, DataRecord*& target){
     
@@ -227,21 +226,17 @@ bool HashedTable::findEntry(DataRecord* targetKey, DataRecord*& target){
     int ColResCounter=0;
     
     
-    while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) && ArrPtr[index].getItem()!=0){
-        if( (ArrPtr[index].getItem()->get_name()) == targetKey->get_name())
-        {
-            //cout<<targetKey<<" found at "<<index<<endl;
-            target=ArrPtr[index].getItem();
-            return true;
+    while((ColResCounter<MaxProbes) && (ArrPtr[index].getStatus() != 0) ){
+        if(ArrPtr[index].getStatus()==1){
+            if( (ArrPtr[index].getItem()->get_name()) == targetKey->get_name()){
+                target=ArrPtr[index].getItem();
+                return true;
+            }
         }
-        else {
+
             ColResCounter++;
             index=ColRes(index, ColResCounter, targetKey);
-        }
     }
-    
-    //cout<<targetKey<<" not found\n";
-    
     return false;
 }
 
@@ -259,14 +254,12 @@ void HashedTable::insert(DataRecord* star){
     if (ArrPtr[index].getStatus()!=1){
         ArrPtr[index].setItem(star);
         ArrPtr[index].setColCount(ColResCount);
-        //cout<<star->get_name()<<" inserted at "<<index<<endl;
 		ColCount=ColCount+ColResCount;
         if (ColResCount>MaxProbes){
 			MaxProbeArr.clear();
             MaxProbes=ColResCount;
             }
         if (ColResCount==MaxProbes){
-            //cout<<ColResCount<<star->get_name()<<endl;//test.
             MaxProbeArr.push_back(star->get_name());
         }
         return;
@@ -276,9 +269,6 @@ void HashedTable::insert(DataRecord* star){
         index=ColRes(index, ColResCount, star);
         }
     }
-	
-
-    
 }
 
 bool HashedTable::removeFromProbeArr(DataRecord* star){
@@ -290,7 +280,6 @@ bool HashedTable::removeFromProbeArr(DataRecord* star){
         }
         if (deleted==true){
             if (MaxProbeArr.empty())//MaxProbeArr[0]==0){
-                cout<<"Array is empty!\n";
                 MaxProbes = 0;
                 for (int j=0; j<ArrSize; j++){
                     if (ArrPtr[j].getColResCount()>MaxProbes){
@@ -300,7 +289,7 @@ bool HashedTable::removeFromProbeArr(DataRecord* star){
 					if (ArrPtr[j].getColResCount()==MaxProbes){
 						if (ArrPtr[j].getItem() != 0)
 						{
-							cout << ArrPtr[j].getColResCount() << ArrPtr[j].getItem()->get_name() << endl;
+							//cout << ArrPtr[j].getColResCount() << ArrPtr[j].getItem()->get_name() << endl;
 							//addToProbeArr(ArrPtr[j].getItem());
 							MaxProbeArr.push_back(ArrPtr[j].getItem()->get_name());
 						}
@@ -318,12 +307,12 @@ bool HashedTable::remove(DataRecord* star){
     int index= hash(star);
     
     while (ArrPtr[index].getStatus()!=0 && ColResCount<=MaxProbes){
-        if (ArrPtr[index].getItem()->get_name()==star->get_name()){
-            ArrPtr[index].setItem(0);
-            ArrPtr[index].setStatus(-1);
-
-			ColCount=ColCount-ArrPtr[index].getColResCount();
-            ArrPtr[index].setColCount(0);
+        if(ArrPtr[index].getStatus()==1){
+            if (ArrPtr[index].getItem()->get_name()==star->get_name()){
+                ArrPtr[index].setItem(0);
+                ArrPtr[index].setStatus(-1);
+                ColCount=ColCount-ArrPtr[index].getColResCount();
+                ArrPtr[index].setColCount(0);
 
 			for (size_t i = 0; i < MaxProbeArr.size(); i++){
                if (MaxProbeArr[i] == star->get_name()){
@@ -331,13 +320,14 @@ bool HashedTable::remove(DataRecord* star){
                 }
             }
 	        return true;
+            }
         }
-        else
-        {
+            
+        
             ColResCount++;
             index=ColRes(index, ColResCount, star);
 
-        }
+        
     }
     
 	return false;
