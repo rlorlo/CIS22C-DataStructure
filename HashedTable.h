@@ -51,7 +51,7 @@ public:
     string printHashSequence(const string key);
 	void printOutToFile(ostream& o);
     string printHash();
-
+    string findChain(string star);
 };
 
 

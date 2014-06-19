@@ -35,8 +35,8 @@ int HashedTable::hash(const DataRecord* A){
     double index2=0;
     char word[40];
     int size=(A->get_name()).length();
-    //xcodestrcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
-    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+    //xcode    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
     
     index2=index2+(word[(3)/size]*((word[(2)/size])-size));
     
@@ -51,8 +51,8 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     int size=target.length();
-    //xcode strcpy(word,(target.c_str()));
-    strcpy_s(word,(target.c_str()));
+ strcpy(word,(target.c_str()));
+    //xcode    strcpy_s(word,(target.c_str()));
     
     
     index2=index2+(word[(3)/size]*((word[(2)/size])-size));
@@ -67,8 +67,8 @@ int HashedTable::ColRes(int index, int count, const DataRecord* target){
     double newIndex2;
     char word[40];
     int size=(target->get_name()).length();
-    //xcodestrcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
-    strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+    //xcode    strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
 
     //newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
     newIndex2=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
@@ -81,8 +81,8 @@ int HashedTable::ColRes(int index, int count, const string target){
     double newIndex2;
     char word[40];
     int size=target.length();
-	// xcode strcpy(word,(target.c_str()));
-    strcpy_s(word,(target.c_str()));
+ strcpy(word,(target.c_str()));
+	// xcode    strcpy_s(word,(target.c_str()));
 
 //      newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
 //    newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
@@ -143,12 +143,46 @@ string HashedTable::displayStats() {
 
 	for (size_t i = 0; i<MaxProbeArr.size(); i++){
             output<<MaxProbeArr[i]<<endl;
+//            output<<"Chain: \n";
+            output<<findChain(MaxProbeArr[i]);
         }
     
     output<<endl;
-    cout << output.str();
+   // cout << output.str();
     
     return output.str();
+}
+
+string HashedTable::findChain(string star){
+    stringstream chain;
+    int ColResCount=0;
+    int index=0;
+    index = hash(star);
+    
+    chain<<"Chain: \n"<<ArrPtr[index].getItem()->get_name()<<", ";
+    
+    while (ColResCount<MaxProbes){
+        
+        if (ArrPtr[index].getStatus()!=1){
+            chain<<ArrPtr[index].getItem()->get_name()<<endl<<endl;
+            return chain.str();
+        }
+        else{
+            ColResCount++;
+            index=ColRes(index, ColResCount, star);
+            if (ArrPtr[index].getStatus()==1){
+                chain<<ArrPtr[index].getItem()->get_name()<<", ";
+            }
+            else if (ArrPtr[index].getStatus()==-1){
+                chain<<"Data deleted, ";
+            }
+            else if (ArrPtr[index].getStatus()==0){
+                chain<<"0, ";
+            }
+        }
+
+    }
+        return "Chain not found";
 }
 
 int HashedTable::GetNum(int numNodes) {
@@ -232,7 +266,7 @@ void HashedTable::insert(DataRecord* star){
             MaxProbes=ColResCount;
             }
         if (ColResCount==MaxProbes){
-            cout<<ColResCount<<star->get_name()<<endl;//test.
+            //cout<<ColResCount<<star->get_name()<<endl;//test.
             MaxProbeArr.push_back(star->get_name());
         }
         return;
