@@ -35,10 +35,10 @@ int HashedTable::hash(const DataRecord* A){
     double index2=0;
     char word[40];
     int size=(A->get_name()).length();
-    strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
-    //xcode    strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+strcpy(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
+    //xcode            strcpy_s(word, A->get_name().c_str());//forced to changed to _s to use it in vs2013
     
-    index2=index2+(word[(3)/size]*((word[(2)/size])-size));
+    index2=(word[(3)/size]*((word[(2)/size])-size));
     
     index=((static_cast<int>(index2))%ArrSize);
     
@@ -51,11 +51,11 @@ int HashedTable::hash(const string target){
     double index2=0;
     char word[40];
     int size=target.length();
-     strcpy(word,(target.c_str()));
-    //xcode    strcpy_s(word,(target.c_str()));
+strcpy(word,(target.c_str()));
+    //xcode             strcpy_s(word,(target.c_str()));
     
     
-    index2=index2+(word[(3)/size]*((word[(2)/size])-size));
+    index2=(word[(3)/size]*((word[(2)/size])-size));
     
     index=((static_cast<int>(index2))%ArrSize);
     
@@ -68,7 +68,7 @@ int HashedTable::ColRes(int index, int count, const DataRecord* target){
     char word[40];
     int size=(target->get_name()).length();
     strcpy(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
-        //xcodestrcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
+    //xcode        strcpy_s(word, target->get_name().c_str());//forced to changed to _s to use it in vs2013
 
     //newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
     newIndex2=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
@@ -81,10 +81,11 @@ int HashedTable::ColRes(int index, int count, const string target){
     double newIndex2;
     char word[40];
     int size=target.length();
-     strcpy(word,(target.c_str()));
-      //xcode  strcpy_s(word,(target.c_str()));
+    strcpy(word,(target.c_str()));
+    //xcode           strcpy_s(word,(target.c_str()));
 
-//      newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
+    if (count>(7*size/8))
+        count=1;
 //    newIndex2=(5*count*word[(7*count)%size]+3*count*word[9/11*size])%ArrSize;  //529 & 8
     newIndex2=((word[7*size/8-count]+word[size-count]*count)*index)%ArrSize; // 280 & 5
     newIndex=((static_cast<int>(newIndex2)));
@@ -112,8 +113,7 @@ string HashedTable::printHashSequence(const string key){
     
     if(ArrPtr[index].getStatus()!=0)
         while((ColResCounter<ArrSize) && (ArrPtr[index].getStatus() != 0) && ArrPtr[index].getItem()!=0){
-            if( (ArrPtr[index].getItem())->get_name() == key)
-            {
+            if( (ArrPtr[index].getItem())->get_name() == key){
                 hashSequence<<index<<endl;
                 return hashSequence.str();
             }
@@ -143,12 +143,10 @@ string HashedTable::displayStats() {
 
 	for (size_t i = 0; i<MaxProbeArr.size(); i++){
             output<<MaxProbeArr[i]<<endl;
-//            output<<"Chain: \n";
             output<<findChain(MaxProbeArr[i]);
         }
     
     output<<endl;
-   // cout << output.str();
     
     return output.str();
 }
@@ -275,11 +273,11 @@ bool HashedTable::removeFromProbeArr(DataRecord* star){
     bool deleted=false;
     for (size_t i =0; i<MaxProbeArr.size(); i++){
 		if (MaxProbeArr[i] == star->get_name()){
-			MaxProbeArr.erase(MaxProbeArr.begin() + i);//the .begin means to start at beginning of array.
+			MaxProbeArr.erase(MaxProbeArr.begin() + i);
             deleted=true;
         }
         if (deleted==true){
-            if (MaxProbeArr.empty())//MaxProbeArr[0]==0){
+            if (MaxProbeArr.empty()){
                 MaxProbes = 0;
                 for (int j=0; j<ArrSize; j++){
                     if (ArrPtr[j].getColResCount()>MaxProbes){
@@ -289,13 +287,12 @@ bool HashedTable::removeFromProbeArr(DataRecord* star){
 					if (ArrPtr[j].getColResCount()==MaxProbes){
 						if (ArrPtr[j].getItem() != 0)
 						{
-							//cout << ArrPtr[j].getColResCount() << ArrPtr[j].getItem()->get_name() << endl;
-							//addToProbeArr(ArrPtr[j].getItem());
 							MaxProbeArr.push_back(ArrPtr[j].getItem()->get_name());
 						}
                 }
                 }
             }
+        }
 				return true;
         }
     return false;
