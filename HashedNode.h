@@ -26,6 +26,7 @@ public:
     void deleteStar()                       {star=0; status=-1;}
 	int getColResCount() const				{return colResCount;}//added
 	void increResCount()					{colResCount++;}//added
+    void setColCount (int num)               {colResCount=num;};
 };
 
 #endif
